@@ -1,9 +1,10 @@
 import Brusha from "@/components/ui/brusha-illustration-studio-hero";
 import LiquidGlassDemo from "@/components/liquid-glass-demo";
+import ThreeDCardDemo from "@/components/3d-card-demo";
 
 export default function Home() {
   return (
-    <main className="w-full min-h-screen overflow-x-hidden">
+    <main className="w-full min-h-screen overflow-x-hidden bg-neutral-950 text-white">
       <Brusha
         brand="GeekBloom"
         copy={{
@@ -24,6 +25,12 @@ export default function Home() {
           { label: "צור קשר", href: "#contact" }
         ]}
       />
+
+      {/* תצוגת הקומפוננטה 3D Card */}
+      <section className="w-full py-12 flex flex-col items-center justify-center">
+        <h2 className="text-2xl font-bold mb-4 text-neutral-200">כרטיס 3D אינטראקטיבי (3D Card)</h2>
+        <ThreeDCardDemo />
+      </section>
 
       {/* תצוגת הקומפוננטה Liquid Glass */}
       <section className="w-full">
