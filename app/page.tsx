@@ -6,6 +6,7 @@ import { StoreLocationSection, Footer } from "@/components/store-location";
 import { StickyWhatsApp } from "@/components/sticky-whatsapp";
 import LiquidGlassDemo from "@/components/liquid-glass-demo";
 import FocusCardsDemo from "@/components/focus-cards-demo";
+import AuroraBackgroundDemo from "@/components/aurora-background-demo";
 
 export default function Home() {
   return (
@@ -82,7 +83,12 @@ export default function Home() {
       {/* 7. כתובת, מפה, שעות פתיחה ויצירת קשר (כולל רקע Fluted Glass Waves) */}
       <StoreLocationSection />
 
-      {/* 8. פוטר */}
+      {/* 8. אפקט אורות הצפון: Aurora Background */}
+      <section className="w-full border-t border-neutral-800">
+        <AuroraBackgroundDemo />
+      </section>
+
+      {/* 9. פוטר */}
       <Footer />
 
       {/* 9. כפתור וואטסאפ צף קבוע */}
