@@ -79,30 +79,20 @@ const NAV_INTRO = {
   // The wordmark's size at the centre
   centreScale: { desktop: 2.8, mobile: 2.2 },
 
-  // The coral line draws left → right
-  line: { delay: 0.3, duration: 0.9 },
-
-  // The line erases left → right as the letters form
-  transform: { start: 1.2, duration: 1.5 },
-  letterDuration: 0.5,
-
-  // How far along the erase each letter starts forming, measured along the line so the B waits for its loop
+  // Instant fast-track for instant page load
+  line: { delay: 0.05, duration: 0.1 },
+  transform: { start: 0.05, duration: 0.1 },
+  letterDuration: 0.1,
   letterAt: [0.22, 0.44, 0.54, 0.67, 0.79, 0.91],
-
-  // Centre → navbar
-  move: { delay: 3.2, duration: 1.2 },
-  links: { start: 4.1, stagger: 0.09 },
-  cta: 4.4,
-
-  // The plain logo image takes over and the intro layer is removed
-  done: 4.6,
-
-  // The gaps between letters in the logo file, in px of its 600 width
+  move: { delay: 0.05, duration: 0.1 },
+  links: { start: 0.05, stagger: 0.04 },
+  cta: 0.1,
+  done: 0.15,
   letterEdges: [0, 126, 197, 298, 388, 489, 600]
 }
 
-// The hero waits for the logo to land in the navbar
-const INTRO_START = 4.4
+// The hero renders instantly without the 4.4s delay
+const INTRO_START = 0.05
 
 /**
  * Motion. Times are in seconds. One easing for the whole intro, no springs that
@@ -113,30 +103,30 @@ const EASE = [0.22, 1, 0.36, 1] as const
 
 /**
  * Load sequence after INTRO_START: nav → headline → description → CTA → background artwork →
- * small details. The last item lands about 1.3s in
+ * small details. Fast, smooth, responsive
  */
 const INTRO = {
-  duration: 0.75,
+  duration: 0.5,
 
   // The navbar has its own sequence: NAV_INTRO
   nav: 0,
-  headline: [INTRO_START + 0.08, INTRO_START + 0.15],
-  description: INTRO_START + 0.26,
-  cta: INTRO_START + 0.34,
+  headline: [INTRO_START + 0.04, INTRO_START + 0.08],
+  description: INTRO_START + 0.12,
+  cta: INTRO_START + 0.16,
 
   // Background pieces, staggered from here
-  artworkStart: INTRO_START + 0.36,
+  artworkStart: INTRO_START + 0.18,
   artworkStagger: 0.02,
 
   // The girl, a beat after the plants around her
-  figure: INTRO_START + 0.6,
+  figure: INTRO_START + 0.25,
 
   // The sun comes down from above into place
-  sun: { delay: INTRO_START + 0.3, duration: 1.3, from: -260 },
+  sun: { delay: INTRO_START + 0.15, duration: 0.8, from: -260 },
 
   // Bird, trail, star
-  detailStart: INTRO_START + 0.68,
-  detailStagger: 0.06
+  detailStart: INTRO_START + 0.3,
+  detailStagger: 0.04
 }
 
 // Cursor follow for the sun's eyes (mouse/trackpad only); hover reactions live in hover-motion.ts
@@ -2053,7 +2043,7 @@ const HeroNavbar = () => {
           aria-controls='lm-mobile-menu'
           onClick={handleToggle}
           style={revealStyle({ delay: NAV_INTRO.cta, y: 5, duration: 0.45 })}
-          className='lm-enter border-lm-ink/15 text-lm-ink flex size-10 shrink-0 items-center justify-center rounded-full border md:hidden'
+          className='lm-enter border-emerald-700/50 bg-[#092215] text-[#f1d89b] shadow-md flex size-10 shrink-0 items-center justify-center rounded-full border md:hidden'
         >
           {open ? <X aria-hidden className='size-[18px]' /> : <Menu aria-hidden className='size-[18px]' />}
         </button>
