@@ -5,6 +5,7 @@ import { GeekBloomCarousel } from "@/components/geekbloom-carousel";
 import { StoreLocationSection, Footer } from "@/components/store-location";
 import { StickyWhatsApp } from "@/components/sticky-whatsapp";
 import LiquidGlassDemo from "@/components/liquid-glass-demo";
+import FocusCardsDemo from "@/components/focus-cards-demo";
 
 export default function Home() {
   return (
@@ -42,7 +43,20 @@ export default function Home() {
       {/* 4. קרוסלת כרטיסי Apple עם מודאלים לקטלוג */}
       <GeekBloomCarousel />
 
-      {/* 5. קיר הביקורות המאומתות מגוגל */}
+      {/* 5. כרטיסי מיקוד אינטראקטיביים (Focus Cards) */}
+      <section className="w-full py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="text-center mb-10">
+          <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+            גלריית כרטיסי מיקוד (Focus Cards)
+          </h3>
+          <p className="text-neutral-400 text-sm mt-2">
+            רחפו מעל כרטיס כדי למקד אותו ולטשטש בעדינות את שאר הכרטיסים
+          </p>
+        </div>
+        <FocusCardsDemo />
+      </section>
+
+      {/* 6. קיר הביקורות המאומתות מגוגל */}
       <GoogleReviewsSection />
 
       {/* 6. פיצ'ר אינטראקטיבי: Liquid Glass Refraction */}
