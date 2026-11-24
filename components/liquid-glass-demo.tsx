@@ -1,93 +1,256 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useReducedMotion } from "motion/react";
-import { LiquidGlass } from "@/components/ui/liquid-glass";
-import { Sparkles, Move } from "lucide-react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
+import { Sparkles, Move, ZoomIn, Search, Target } from "lucide-react";
 
-type LiquidGlassDemoProps = {
-  shape?: "circle" | "pill";
-  scale?: number;
-  aberration?: number;
-  bevelDepth?: number;
-  frost?: number;
-  tint?: number;
+type Hotspot = {
+  label: string;
+  xPercent: number;
+  yPercent: number;
+  icon: string;
 };
 
-export default function LiquidGlassDemo({
-  shape = "circle",
-  scale = 48,
-  aberration = 14,
-  bevelDepth = 37,
-  frost = 0.4,
-  tint = 0.12,
-}: LiquidGlassDemoProps) {
-  const constraintsRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
-  const size = shape === "pill" ? { w: 320, h: 140 } : { w: 220, h: 220 };
+const HOTSPOTS: Hotspot[] = [
+  { label: "פיקאצ'ו", xPercent: 24, yPercent: 78, icon: "⚡" },
+  { label: "קלף צ'רמנדר", xPercent: 35, yPercent: 80, icon: "🔥" },
+  { label: "בובת דקו (Funko)", xPercent: 14, yPercent: 62, icon: "🦸‍♂️" },
+  { label: "עציץ בולבזאור", xPercent: 82, yPercent: 78, icon: "🌱" },
+  { label: "זרי פרחים טריים", xPercent: 52, yPercent: 50, icon: "🌸" },
+];
+
+export default function LiquidGlassDemo() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerSize, setContainerSize] = useState({ w: 800, h: 520 });
+  const [lensPos, setLensPos] = useState({ x: 200, y: 320 });
+  const [zoom, setZoom] = useState(2.2);
+  const [isDragging, setIsDragging] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+
+  // גודל עדשת זכוכית המגדלת
+  const lensDiameter = 220;
+  const lensRadius = lensDiameter / 2;
+
+  // מדידת גודל הקונטיינר באופן דינמי
+  const updateSize = useCallback(() => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setContainerSize({ w: rect.width, h: rect.height });
+    }
+  }, []);
+
+  useEffect(() => {
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
+  }, [updateSize]);
+
+  // עדכון מיקום העדשה
+  const setPositionFromCoords = (clientX: number, clientY: number) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = Math.max(lensRadius, Math.min(rect.width - lensRadius, clientX - rect.left));
+    const y = Math.max(lensRadius, Math.min(rect.height - lensRadius, clientY - rect.top));
+    setLensPos({ x, y });
+    setHasInteracted(true);
+  };
+
+  // גרירה באמצעות Pointer Events (עכבר ומגע כאחד)
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    setIsDragging(true);
+    setPositionFromCoords(e.clientX, e.clientY);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    setPositionFromCoords(e.clientX, e.clientY);
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (isDragging) {
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      } catch {}
+      setIsDragging(false);
+    }
+  };
+
+  // לחיצה על התמונה מזיזה את זכוכית המגדלת מיד לנקודה
+  const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    setPositionFromCoords(e.clientX, e.clientY);
+  };
+
+  // התמקדות אוטומטית במוקד עניין
+  const goToHotspot = (hotspot: Hotspot) => {
+    const x = (hotspot.xPercent / 100) * containerSize.w;
+    const y = (hotspot.yPercent / 100) * containerSize.h;
+    setLensPos({
+      x: Math.max(lensRadius, Math.min(containerSize.w - lensRadius, x)),
+      y: Math.max(lensRadius, Math.min(containerSize.h - lensRadius, y)),
+    });
+    setHasInteracted(true);
+  };
 
   return (
-    <div
-      ref={constraintsRef}
-      className="relative h-[32rem] sm:h-[36rem] w-full overflow-hidden bg-neutral-900 select-none"
-    >
-      {/* תמונה אמיתית של Geek&Bloom ברקע */}
-      <img
-        src="/images/hybrid-combo-hero.jpg"
-        alt="Geek&Bloom Flowers and Collectibles"
-        className="absolute inset-0 size-full object-cover filter brightness-90"
-        draggable={false}
-      />
+    <div className="w-full flex flex-col items-center select-none">
+      {/* סרגל שליטה עליון: רמות זום ונקודות מיקוד */}
+      <div className="w-full flex flex-wrap items-center justify-between gap-3 mb-4 px-2">
+        {/* כפתורי זום */}
+        <div className="flex items-center gap-1.5 bg-neutral-900 border border-neutral-700/80 p-1 rounded-full shadow-md">
+          <span className="text-xs text-neutral-400 px-2 flex items-center gap-1">
+            <ZoomIn className="w-3.5 h-3.5 text-emerald-400" />
+            <span>רמת הגדלה:</span>
+          </span>
+          {[1.6, 2.2, 3.0].map((lvl) => (
+            <button
+              key={lvl}
+              type="button"
+              onClick={() => setZoom(lvl)}
+              className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${
+                zoom === lvl
+                  ? "bg-emerald-500 text-black shadow-md shadow-emerald-500/20"
+                  : "text-neutral-300 hover:text-white hover:bg-neutral-800"
+              }`}
+            >
+              x{lvl}
+            </button>
+          ))}
+        </div>
 
-      {/* שכבת טקסט מעוצבת ברקע */}
-      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-black/35 backdrop-blur-[1px]">
-        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold mb-3 border border-emerald-400/30">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>גררו את עדשת הזכוכית הנוזלית מעל התמונה</span>
-        </span>
-        <p className="text-4xl sm:text-6xl md:text-7xl leading-[1.05] font-black tracking-tight text-white drop-shadow-lg">
-          Where Nature
-          <br />
-          Meets Geek.
-        </p>
-        <p className="mt-4 text-emerald-300 font-semibold text-sm sm:text-lg drop-shadow">
-          סוקולוב 66, הרצליה • פרחים, בונסאי ופריטי אספנות
-        </p>
+        {/* נקודות מיקוד מהירות */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-neutral-400 hidden sm:inline flex items-center gap-1">
+            <Target className="w-3.5 h-3.5 text-emerald-400" />
+            <span>התמקד ב:</span>
+          </span>
+          {HOTSPOTS.map((h) => (
+            <button
+              key={h.label}
+              type="button"
+              onClick={() => goToHotspot(h)}
+              className="px-2.5 py-1 text-xs font-semibold rounded-full bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700/70 hover:border-emerald-500/60 transition-all flex items-center gap-1"
+            >
+              <span>{h.icon}</span>
+              <span>{h.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* עדשת הזכוכית הנגררת (Liquid Glass Lens) */}
-      <motion.div
-        drag
-        dragConstraints={constraintsRef}
-        dragElastic={0.08}
-        whileHover={{ scale: 1.05 }}
-        whileDrag={reduceMotion ? undefined : { scale: 1.1 }}
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing touch-none z-30"
-        style={{
-          width: size.w,
-          height: size.h,
-        }}
+      {/* אזור התמונה הראשי עם זכוכית המגדלת האופטית */}
+      <div
+        ref={containerRef}
+        onClick={handleContainerClick}
+        className="relative w-full h-[30rem] sm:h-[36rem] md:h-[40rem] rounded-3xl overflow-hidden bg-neutral-950 border border-neutral-800 shadow-2xl cursor-crosshair group touch-none"
       >
-        <LiquidGlass
-          radius={size.h / 2}
-          scale={scale}
-          aberration={aberration}
-          bevelDepth={bevelDepth}
-          frost={frost}
-          tint={tint}
-          className="size-full flex flex-col items-center justify-center p-4 text-center cursor-grab active:cursor-grabbing"
+        {/* תמונת הרקע הראשית באיכות גבוהה */}
+        <img
+          src="/images/hybrid-combo-hero.jpg"
+          alt="Geek&Bloom Flowers and Collectibles"
+          className="absolute inset-0 size-full object-cover filter brightness-[0.88] contrast-[1.05]"
+          draggable={false}
+        />
+
+        {/* שכבת טקסט מעוצבת ברקע */}
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-black/30">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold mb-3 border border-emerald-400/30 backdrop-blur-md">
+            <Sparkles className="w-4 h-4 text-emerald-400 animate-spin-slow" />
+            <span>זכוכית מגדלת אינטראקטיבית – גררו או לחצו בכל מקום בתמונה</span>
+          </span>
+          <h2 className="text-4xl sm:text-6xl md:text-7xl leading-tight font-black tracking-tight text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+            Where Nature
+            <br />
+            Meets Geek.
+          </h2>
+          <p className="mt-3 text-emerald-300 font-bold text-sm sm:text-lg drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            סוקולוב 66, הרצליה • פרחים, בונסאי ופריטי אספנות
+          </p>
+        </div>
+
+        {/* עדשת זכוכית המגדלת האופטית האמיתית (Magnifying Lens) */}
+        <div
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          className={`absolute rounded-full cursor-grab active:cursor-grabbing select-none z-30 transition-transform ${
+            isDragging ? "scale-105" : "hover:scale-102"
+          }`}
+          style={{
+            width: lensDiameter,
+            height: lensDiameter,
+            left: lensPos.x - lensRadius,
+            top: lensPos.y - lensRadius,
+            boxShadow:
+              "0 20px 50px rgba(0,0,0,0.7), inset 0 2px 6px rgba(255,255,255,0.75), inset 0 -3px 8px rgba(0,0,0,0.6)",
+          }}
         >
-          <div className="pointer-events-none flex flex-col items-center gap-1">
-            <Move className="w-6 h-6 text-white/90 drop-shadow animate-pulse" />
-            <span className="text-xs font-bold text-white tracking-wider uppercase drop-shadow">
-              גרור אותי
-            </span>
-            <span className="text-[10px] text-white/80 font-medium">
-              Liquid Glass Lens
+          {/* מסגרת זהב יוקרתית של זכוכית מגדלת בוטיק */}
+          <div className="absolute inset-0 rounded-full border-4 border-[#d4af37] ring-2 ring-emerald-500/50 pointer-events-none z-30" />
+
+          {/* אפקט החזרת אור (Specular Sheen) */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 via-transparent to-white/10 pointer-events-none z-20" />
+
+          {/* תצוגת ההגדלה האופטית החדה (Magnified Image View) */}
+          <div className="absolute inset-0 rounded-full overflow-hidden z-10 bg-neutral-900">
+            <div
+              className="absolute origin-top-left"
+              style={{
+                width: containerSize.w,
+                height: containerSize.h,
+                transform: `scale(${zoom})`,
+                transformOrigin: "0 0",
+                left: -(lensPos.x * zoom - lensRadius),
+                top: -(lensPos.y * zoom - lensRadius),
+              }}
+            >
+              <img
+                src="/images/hybrid-combo-hero.jpg"
+                alt="Magnified View"
+                className="w-full h-full object-cover filter brightness-105 contrast-110"
+                draggable={false}
+              />
+              {/* הטקסט מוגדל גם כן בתוך העדשה */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-black/20">
+                <h2 className="text-4xl sm:text-6xl md:text-7xl font-black text-white drop-shadow-lg">
+                  Where Nature<br />Meets Geek.
+                </h2>
+              </div>
+            </div>
+          </div>
+
+          {/* תגית חיווי של זכוכית המגדלת בתחתית העדשה */}
+          <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center">
+            <span className="px-3 py-0.5 rounded-full bg-black/85 border border-[#d4af37]/70 text-[#f1d89b] text-[10px] font-bold tracking-wider uppercase backdrop-blur-sm shadow-md whitespace-nowrap">
+              זכוכית מגדלת {zoom}x
             </span>
           </div>
-        </LiquidGlass>
-      </motion.div>
+
+          {/* צלב כוונת עדין במרכז העדשה */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 opacity-30">
+            <div className="w-4 h-0.5 bg-white rounded-full" />
+            <div className="h-4 w-0.5 bg-white rounded-full -ml-2" />
+          </div>
+        </div>
+
+        {/* טיפ קטן שמוצג בהתחלה לפני אינטראקציה ראשונה */}
+        {!hasInteracted && (
+          <div className="absolute top-4 left-4 z-20 pointer-events-none animate-bounce">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/80 border border-emerald-500/50 text-emerald-300 text-xs font-semibold backdrop-blur-sm shadow-lg">
+              <Move className="w-3.5 h-3.5 text-emerald-400" />
+              <span>תפוס וגרור את העדשה!</span>
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* הסבר קצר מתחת לאינטראקציה */}
+      <div className="mt-4 text-center text-xs text-neutral-400 flex items-center gap-2">
+        <Search className="w-3.5 h-3.5 text-emerald-400" />
+        <span>
+          זכוכית המגדלת מאפשרת לראות ברזולוציה גבוהה את הפרטים של בובות האספנות, קלפי הפוקימון וזרי הפרחים הטריים.
+        </span>
+      </div>
     </div>
   );
 }
