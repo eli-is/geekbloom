@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { LiquidGlass } from "@/components/ui/liquid-glass";
+import { Sparkles, Move } from "lucide-react";
 
 type LiquidGlassDemoProps = {
   shape?: "circle" | "pill";
@@ -23,43 +24,48 @@ export default function LiquidGlassDemo({
 }: LiquidGlassDemoProps) {
   const constraintsRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
-  const size = shape === "pill" ? { w: 320, h: 120 } : { w: 200, h: 200 };
+  const size = shape === "pill" ? { w: 320, h: 140 } : { w: 220, h: 220 };
 
   return (
     <div
       ref={constraintsRef}
-      className="relative h-[36rem] w-full overflow-hidden bg-neutral-900"
+      className="relative h-[32rem] sm:h-[36rem] w-full overflow-hidden bg-neutral-900 select-none"
     >
+      {/* תמונה אמיתית של Geek&Bloom ברקע */}
       <img
-        src="https://assets.aceternity.com/screenshots/colourful-office.webp"
-        alt=""
-        className="absolute inset-0 size-full object-cover"
+        src="/images/hybrid-combo-hero.jpg"
+        alt="Geek&Bloom Flowers and Collectibles"
+        className="absolute inset-0 size-full object-cover filter brightness-90"
         draggable={false}
       />
-      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-8 text-center select-none">
-        <p className="text-6xl leading-[0.95] font-bold tracking-tighter text-white md:text-8xl">
-          Bend the
+
+      {/* שכבת טקסט מעוצבת ברקע */}
+      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-black/35 backdrop-blur-[1px]">
+        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold mb-3 border border-emerald-400/30">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>גררו את עדשת הזכוכית הנוזלית מעל התמונה</span>
+        </span>
+        <p className="text-4xl sm:text-6xl md:text-7xl leading-[1.05] font-black tracking-tight text-white drop-shadow-lg">
+          Where Nature
           <br />
-          light.
+          Meets Geek.
         </p>
-        <div className="mt-8 grid w-full max-w-md grid-cols-12 gap-1.5">
-          {Array.from({ length: 48 }).map((_, i) => (
-            <span key={i} className="h-1.5 rounded-full bg-white/80" />
-          ))}
-        </div>
+        <p className="mt-4 text-emerald-300 font-semibold text-sm sm:text-lg drop-shadow">
+          סוקולוב 66, הרצליה • פרחים, בונסאי ופריטי אספנות
+        </p>
       </div>
 
+      {/* עדשת הזכוכית הנגררת (Liquid Glass Lens) */}
       <motion.div
         drag
         dragConstraints={constraintsRef}
-        dragElastic={0.1}
-        whileDrag={reduceMotion ? undefined : { scale: 1.04 }}
-        className="absolute top-1/2 left-1/2 cursor-grab touch-none active:cursor-grabbing"
+        dragElastic={0.08}
+        whileHover={{ scale: 1.05 }}
+        whileDrag={reduceMotion ? undefined : { scale: 1.1 }}
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing touch-none z-30"
         style={{
           width: size.w,
           height: size.h,
-          marginLeft: -size.w / 2,
-          marginTop: -size.h / 2,
         }}
       >
         <LiquidGlass
@@ -69,8 +75,18 @@ export default function LiquidGlassDemo({
           bevelDepth={bevelDepth}
           frost={frost}
           tint={tint}
-          className="size-full shadow-[0_12px_40px_rgb(0_0_0/0.25),inset_0_1px_0_rgb(255_255_255/0.5)]"
-        />
+          className="size-full flex flex-col items-center justify-center p-4 text-center cursor-grab active:cursor-grabbing"
+        >
+          <div className="pointer-events-none flex flex-col items-center gap-1">
+            <Move className="w-6 h-6 text-white/90 drop-shadow animate-pulse" />
+            <span className="text-xs font-bold text-white tracking-wider uppercase drop-shadow">
+              גרור אותי
+            </span>
+            <span className="text-[10px] text-white/80 font-medium">
+              Liquid Glass Lens
+            </span>
+          </div>
+        </LiquidGlass>
       </motion.div>
     </div>
   );

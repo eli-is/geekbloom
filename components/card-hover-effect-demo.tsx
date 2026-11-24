@@ -2,46 +2,47 @@ import { HoverEffect } from "@/components/ui/card-hover-effect";
 
 export default function CardHoverEffectDemo() {
   return (
-    <div className="max-w-5xl mx-auto px-8">
-      <HoverEffect items={projects} />
+    <div className="max-w-6xl mx-auto px-4 sm:px-8">
+      <HoverEffect items={benefits} />
     </div>
   );
 }
-export const projects = [
+
+export const benefits = [
   {
-    title: "Stripe",
+    title: "מועדון הלקוחות Club 5 🎁",
     description:
-      "A technology company that builds economic infrastructure for the internet.",
-    link: "https://stripe.com",
+      "5% הנחה קבועה לכל החיים החל מהקנייה הראשונה! ללא ספאם ובהצטרפות פשוטה ישירות בחנות.",
+    link: "https://spotobuy.com/store/6acb88a05b74df2bc27b1379/b08d4839-ccab-4420-b5ab-897db00a8b69",
   },
   {
-    title: "Netflix",
+    title: "10% הנחה לכוחות הביטחון ומילואים 🇮🇱",
     description:
-      "A streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices.",
-    link: "https://netflix.com",
+      "מצדיעים ללוחמים ולמשרתי המילואים! 10% הנחה בכל קנייה בהצגת חוגר פעיל או הגעה במדים.",
+    link: "https://wa.me/972544998997?text=%D7%94%D7%99%D7%99%20%D7%90%D7%91%D7%99%D7%91%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A9%D7%A8%D7%AA%20%D7%9E%D7%99%D7%9C%D7%95%D7%90%D7%99%D7%9D%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%96%D7%9E%D7%99%D7%9F",
   },
   {
-    title: "Google",
+    title: "חנות האונליין ב-SpotOBuy 🛍️",
     description:
-      "A multinational technology company that specializes in Internet-related services and products.",
-    link: "https://google.com",
+      "הזמנה ישירה וקלה של כל המוצרים, הפרחים והעציצים עם משלוח מהיר עד פתח הדלת בהרצליה והסביבה.",
+    link: "https://spotobuy.com/store/6acb88a05b74df2bc27b1379/b08d4839-ccab-4420-b5ab-897db00a8b69",
   },
   {
-    title: "Meta",
+    title: "ההדרכה והליווי של אביב 🌱",
     description:
-      "A technology company that focuses on building products that advance Facebook's mission of bringing the world closer together.",
-    link: "https://meta.com",
+      "קניתם בונסאי או צמח? אתם בידיים בטוחות. אביב זמין לכם בוואטסאפ לכל שאלה, בדיקת תמונה וטיפול נכון.",
+    link: "https://wa.me/972544998997",
   },
   {
-    title: "Amazon",
+    title: "בובות פאנקו נדירות & אנימה ⚡",
     description:
-      "A multinational technology company focusing on e-commerce, cloud computing, digital streaming, and artificial intelligence.",
-    link: "https://amazon.com",
+      "מבחר נדיר של Funko Pop (מהדורות Chase ו-Exclusives), דמויות דרגון בול, מארוול, קלפי פוקימון ופריטי אספנות מקוריים.",
+    link: "#catalog",
   },
   {
-    title: "Microsoft",
+    title: "שזירת בוטיק טרייה 🌸",
     description:
-      "A multinational technology company that develops, manufactures, licenses, supports, and sells computer software, consumer electronics, personal computers, and related services.",
-    link: "https://microsoft.com",
+      "זרי פרחים טריים הנשזרים מדי יום באהבה ומקצועיות, עם התאמה אישית לכל אירוע, חג ושבת.",
+    link: "#contact",
   },
 ];

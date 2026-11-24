@@ -117,7 +117,7 @@ export function GoogleReviewsSection() {
         </div>
 
         <a
-          href="https://share.google/j9k7P2gsblHujzAPJ"
+          href="https://www.google.com/maps/search/?api=1&query=Geek%26Bloom+סוקולוב+66+הרצליה&hl=iw"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700 text-sm font-semibold transition-all self-start md:self-auto hover:text-white"

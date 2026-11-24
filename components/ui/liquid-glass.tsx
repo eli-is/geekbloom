@@ -133,40 +133,28 @@ export function LiquidGlass({
   const backdrop =
     mode === "opaque"
       ? "none"
-      : mode === "simple"
-        ? "blur(20px) saturate(1.4)"
-        : filter
-          ? `url(#${filter.id}) blur(0.5px) saturate(1.85) brightness(1.02)`
-          : "blur(10px) saturate(1.6) brightness(1.04)";
+      : "blur(14px) saturate(1.7) contrast(1.05)";
 
   return (
     <div
       ref={rootRef}
-      data-refract={mode === "pending" && filter ? "true" : "false"}
+      data-refract="true"
       className={cn(
-        "relative overflow-hidden",
-        mode === "simple" && "bg-white/70 dark:bg-neutral-900/60",
-        mode === "opaque" && "bg-white dark:bg-neutral-900",
+        "relative overflow-hidden border border-white/40 shadow-[0_20px_50px_rgba(0,0,0,0.4),inset_0_2px_4px_rgba(255,255,255,0.8),inset_0_-2px_6px_rgba(0,0,0,0.35)]",
         className,
       )}
       style={{
         borderRadius: radius,
-        backgroundColor:
-          mode === "pending" ? `rgb(255 255 255 / ${tint})` : undefined,
+        backgroundColor: "rgba(255, 255, 255, 0.12)",
         backdropFilter: backdrop,
         WebkitBackdropFilter: backdrop,
         ...style,
       }}
       {...rest}
     >
-      {filter ? (
-        <span
-          key={filter.id}
-          aria-hidden
-          className="pointer-events-none absolute size-0 overflow-hidden"
-          dangerouslySetInnerHTML={{ __html: filter.svg }}
-        />
-      ) : null}
+      {/* Specular glass reflection shine */}
+      <div className="pointer-events-none absolute -inset-full bg-gradient-to-tr from-transparent via-white/30 to-transparent rotate-45 transform" />
+      <div className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_20px_rgba(255,255,255,0.25)]" />
       {contentClassName ? (
         <div className={contentClassName}>{children}</div>
       ) : (

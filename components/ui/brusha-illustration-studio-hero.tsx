@@ -48,6 +48,8 @@ export interface BrushaProps {
   brand?: string
   /** The red wordmark image, cropped to the ink on a transparent background (the intro draws it letter by letter). Omit for a text brand */
   logo?: BrushaImage
+  /** Custom ReactNode logo (e.g. GeekBloomLogo) to render in the navbar instead of plain text */
+  customLogo?: ReactNode
   /** The girl on the stone, cropped to her outline; hoverSrc is a copy with the sweater recoloured that fades in on hover. Omit to hide her */
   girl?: BrushaImage & { hoverSrc: string }
   /** Navigation links; they sit before the call-to-action on desktop and in a menu on phones. Default: none */
@@ -201,6 +203,7 @@ interface BrushaContextValue {
   BRAND: string
   GIRL: BrushaImage & { hoverSrc: string }
   LOGO: BrushaImage
+  CUSTOM_LOGO?: ReactNode
   NAV_LINKS: Array< { label: string; href: string } >
   COPY: NonNullable< BrushaProps['copy'] >
   REDUCED: boolean | undefined
@@ -1979,7 +1982,7 @@ const LogoIntro = () => {
  * a link tap, Escape or the toggle; reduced motion shows everything at once
  */
 const HeroNavbar = () => {
-  const { BRAND, LOGO, NAV_LINKS, COPY } = useBrusha()
+  const { BRAND, LOGO, CUSTOM_LOGO, NAV_LINKS, COPY } = useBrusha()
 
   // States
   const [open, setOpen] = useState(false)
@@ -2010,7 +2013,7 @@ const HeroNavbar = () => {
   return (
     <header className='lm-pad-x relative z-20 flex items-center justify-between pt-[max(16px,calc(1.7*var(--u)))]'>
       <a href='#top' className='lm-nav-logo flex shrink-0 items-center' aria-label={`${BRAND} home`}>
-        {LOGO.src ? <LogoIntro /> : BRAND}
+        {CUSTOM_LOGO ? CUSTOM_LOGO : (LOGO.src ? <LogoIntro /> : BRAND)}
       </a>
 
       {/* Links sit on the right, just before the Get in touch button */}
@@ -2789,6 +2792,7 @@ const EMPTY_IMAGE = { src: '', alt: '', width: 1, height: 1 }
 const Brusha = ({
   brand = '',
   logo,
+  customLogo,
   girl,
   navLinks = [],
   copy = {
@@ -2805,6 +2809,7 @@ const Brusha = ({
     BRAND: brand,
     GIRL: girl ?? { ...EMPTY_IMAGE, hoverSrc: '' },
     LOGO: logo ?? EMPTY_IMAGE,
+    CUSTOM_LOGO: customLogo,
     NAV_LINKS: navLinks,
     COPY: copy,
     REDUCED: reducedMotion

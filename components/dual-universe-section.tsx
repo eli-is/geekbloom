@@ -53,7 +53,7 @@ export function DualUniverseSection() {
             <CardItem translateZ="90" className="w-full mt-6">
               <div className="relative h-64 w-full rounded-2xl overflow-hidden group-hover/card:shadow-2xl group-hover/card:shadow-emerald-500/20">
                 <img
-                  src="https://images.unsplash.com/photo-1512428813834-c702c7702b78?q=80&w=1200&auto=format&fit=crop"
+                  src="/images/bonsai-and-gifts.jpg"
                   alt="עץ בונסאי מרהיב בחנות Geek&Bloom"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover/card:scale-105"
                 />
@@ -122,7 +122,7 @@ export function DualUniverseSection() {
             <CardItem translateZ="90" className="w-full mt-6">
               <div className="relative h-64 w-full rounded-2xl overflow-hidden group-hover/card:shadow-2xl group-hover/card:shadow-purple-500/20">
                 <img
-                  src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1200&auto=format&fit=crop"
+                  src="/images/figures-and-succulents.jpg"
                   alt="בובות פאנקו פופ ופיגורים של גיקים ב-Geek&Bloom"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover/card:scale-105"
                 />

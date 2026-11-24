@@ -247,31 +247,31 @@ const catalogData = [
   {
     category: "קונספט בלעדי",
     title: "מארז היברידי: עציץ בוטיק + פאנקו פופ תואם",
-    src: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=1200&auto=format&fit=crop",
+    src: "/images/hybrid-combo-hero.jpg",
     content: <HybridComboContent />,
   },
   {
     category: "תרבות הגיקים",
     title: "בובות פאנקו פופ, אנימה ופריטי מארוול נדירים",
-    src: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1200&auto=format&fit=crop",
+    src: "/images/figures-and-succulents.jpg",
     content: <FunkoCollectiblesContent />,
   },
   {
     category: "בוטניקה ואומנות",
     title: "עציצי בונסאי מרהיבים, סוקולנטים וצמחי בית",
-    src: "https://images.unsplash.com/photo-1512428813834-c702c7702b78?q=80&w=1200&auto=format&fit=crop",
+    src: "/images/bonsai-and-gifts.jpg",
     content: <BonsaiPlantsContent />,
   },
   {
     category: "בוטיק שזירה",
     title: "זרי פרחים טריים בעיצוב רענן ומרגש",
-    src: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?q=80&w=1200&auto=format&fit=crop",
+    src: "/images/aviv-bouquet.jpg",
     content: <FreshFlowersContent />,
   },
   {
-    category: "אספנות ונוסטלגיה",
-    title: "קלפי פוקימון מקוריים ומארזי אספנים",
-    src: "https://images.unsplash.com/photo-1613771404784-3a5686aa2be3?q=80&w=1200&auto=format&fit=crop",
+    category: "חנות הקונספט",
+    title: "סוקולוב 66 הרצליה • המקום שבו הטבע פוגש את תרבות הגיקים",
+    src: "/images/storefront-aviv.jpg",
     content: <PokemonRetroContent />,
   },
 ];
