@@ -31,7 +31,6 @@ export default function Home() {
           secondaryCta: { label: "איך מגיעים? (סוקולוב 66)", href: "#contact" }
         }}
         navLinks={[
-          { label: "חנות אונליין", href: "https://spotobuy.com/store/6acb88a05b74df2bc27b1379/b08d4839-ccab-4420-b5ab-897db00a8b69" },
           { label: "הקולקציות", href: "#catalog" },
           { label: "שני העולמות", href: "#dual-universe" },
           { label: "מועדון Club 5", href: "#benefits" },
