@@ -1,4 +1,5 @@
 import Brusha from "@/components/ui/brusha-illustration-studio-hero";
+import LiquidGlassDemo from "@/components/liquid-glass-demo";
 
 export default function Home() {
   return (
@@ -23,6 +24,11 @@ export default function Home() {
           { label: "צור קשר", href: "#contact" }
         ]}
       />
+
+      {/* תצוגת הקומפוננטה Liquid Glass */}
+      <section className="w-full">
+        <LiquidGlassDemo />
+      </section>
     </main>
   );
 }
