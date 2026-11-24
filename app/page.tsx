@@ -7,6 +7,7 @@ import { StickyWhatsApp } from "@/components/sticky-whatsapp";
 import LiquidGlassDemo from "@/components/liquid-glass-demo";
 import FocusCardsDemo from "@/components/focus-cards-demo";
 import AuroraBackgroundDemo from "@/components/aurora-background-demo";
+import CardHoverEffectDemo from "@/components/card-hover-effect-demo";
 
 export default function Home() {
   return (
@@ -88,7 +89,20 @@ export default function Home() {
         <AuroraBackgroundDemo />
       </section>
 
-      {/* 9. פוטר */}
+      {/* 9. אפקט ריחוף כרטיסים: Card Hover Effect */}
+      <section className="w-full py-16 bg-neutral-950/80 border-t border-neutral-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-6">
+          <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+            אפקט ריחוף כרטיסים (Card Hover Effect)
+          </h3>
+          <p className="text-neutral-400 text-sm mt-2">
+            הרקע הזוהר עוקב בצורה חלקה אחרי מעבר העכבר בין הכרטיסים
+          </p>
+        </div>
+        <CardHoverEffectDemo />
+      </section>
+
+      {/* 10. פוטר */}
       <Footer />
 
       {/* 9. כפתור וואטסאפ צף קבוע */}
