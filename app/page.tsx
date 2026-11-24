@@ -1,6 +1,7 @@
 import Brusha from "@/components/ui/brusha-illustration-studio-hero";
 import LiquidGlassDemo from "@/components/liquid-glass-demo";
 import ThreeDCardDemo from "@/components/3d-card-demo";
+import AppleCardsCarouselDemo from "@/components/apple-cards-carousel-demo";
 
 export default function Home() {
   return (
@@ -25,6 +26,11 @@ export default function Home() {
           { label: "צור קשר", href: "#contact" }
         ]}
       />
+
+      {/* תצוגת הקומפוננטה Apple Cards Carousel */}
+      <section className="w-full">
+        <AppleCardsCarouselDemo />
+      </section>
 
       {/* תצוגת הקומפוננטה 3D Card */}
       <section className="w-full py-12 flex flex-col items-center justify-center">
