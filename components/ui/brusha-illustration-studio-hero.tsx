@@ -91,8 +91,8 @@ const NAV_INTRO = {
   letterEdges: [0, 126, 197, 298, 388, 489, 600]
 }
 
-// The hero renders instantly without the 4.4s delay
-const INTRO_START = 0.05
+// The hero renders smoothly and visibly on load
+const INTRO_START = 0.08
 
 /**
  * Motion. Times are in seconds. One easing for the whole intro, no springs that
@@ -106,26 +106,26 @@ const EASE = [0.22, 1, 0.36, 1] as const
  * small details. Fast, smooth, responsive
  */
 const INTRO = {
-  duration: 0.5,
+  duration: 0.65,
 
   // The navbar has its own sequence: NAV_INTRO
   nav: 0,
-  headline: [INTRO_START + 0.04, INTRO_START + 0.08],
-  description: INTRO_START + 0.12,
-  cta: INTRO_START + 0.16,
+  headline: [INTRO_START + 0.04, INTRO_START + 0.16],
+  description: INTRO_START + 0.28,
+  cta: INTRO_START + 0.4,
 
   // Background pieces, staggered from here
-  artworkStart: INTRO_START + 0.18,
-  artworkStagger: 0.02,
+  artworkStart: INTRO_START + 0.2,
+  artworkStagger: 0.025,
 
   // The girl, a beat after the plants around her
-  figure: INTRO_START + 0.25,
+  figure: INTRO_START + 0.3,
 
   // The sun comes down from above into place
-  sun: { delay: INTRO_START + 0.15, duration: 0.8, from: -260 },
+  sun: { delay: INTRO_START + 0.18, duration: 0.85, from: -160 },
 
   // Bird, trail, star
-  detailStart: INTRO_START + 0.3,
+  detailStart: INTRO_START + 0.38,
   detailStagger: 0.04
 }
 
@@ -212,9 +212,7 @@ const useBrusha = () => {
 // The visitor's reduced-motion setting, unless the reducedMotion prop forces it
 const useReduce = () => {
   const { REDUCED } = useBrusha()
-  const system = useReducedMotion()
-
-  return REDUCED ?? system
+  return REDUCED === true
 }
 
 /* ----------------------------- Parts ----------------------------- */
@@ -689,8 +687,8 @@ const LumoraBlueBird = (props: SVGProps< SVGSVGElement >) => {
     <svg viewBox='0 0 190 168' aria-hidden {...props}>
       {/* idle: hovering flight, bobbing gently in place */}
       <m.g id='bird-flight' {...BIRD_HOVER}>
-        {/* hover: the bird bobs up and down once */}
-        <m.g id='bird' whileHover={BIRD_BOB} transition={SETTLE}>
+        {/* hover/tap: the bird bobs up and down once */}
+        <m.g id='bird' whileHover={BIRD_BOB} whileTap={BIRD_BOB} transition={SETTLE}>
           <m.g id='tail' {...TAIL_FLUTTER} style={TAIL_ORIGIN}>
             <path
               d='M100 112 C 130 110, 160 104, 186 108 C 172 116, 162 120, 154 124 C 168 132, 174 140, 176 148 C 158 146, 146 142, 138 140 C 142 150, 140 160, 136 168 C 120 152, 108 134, 100 112 Z'
@@ -800,7 +798,7 @@ const { LumoraEyeCard } = (() => {
 const LumoraEyeCard = (props: SVGProps< SVGSVGElement >) => {
   return (
     <svg viewBox='0 0 200 176' aria-hidden {...props}>
-      <m.g id='eye-card' whileHover='blink'>
+      <m.g id='eye-card' whileHover='blink' whileTap='blink'>
         <g id='card'>
           <rect x='6' y='14' width='188' height='162' rx='3' fill='#f8ede0' />
           <rect x='6' y='14' width='188' height='162' rx='3' fill='none' stroke='#ece0cf' strokeWidth='1.5' />
@@ -1215,7 +1213,7 @@ const LumoraMeadowFlowers = (props: SVGProps< SVGSVGElement >) => {
             strokeLinecap='round'
           />
           {f.leaf && <path d={leafPath(f)} fill='#428458' />}
-          <m.g whileHover={FLOWER_POP} transition={SETTLE}>
+          <m.g whileHover={FLOWER_POP} whileTap={FLOWER_POP} transition={SETTLE}>
             <g transform={`translate(${f.x} ${f.y})`}>
               {Array.from({ length: f.petals }, (_, i) => (
                 <path
@@ -1367,8 +1365,8 @@ const LumoraPinkFlower = (props: SVGProps< SVGSVGElement >) => {
           <path d='M70 110 C 70 130, 72 146, 74 160' />
         </g>
 
-        {/* hover: the bloom grows a little, from its base */}
-        <m.g id='bloom' whileHover={FLOWER_POP} transition={SETTLE} style={{ originX: 0.5, originY: 0.9 }}>
+        {/* hover/tap: the bloom grows a little, from its base */}
+        <m.g id='bloom' whileHover={FLOWER_POP} whileTap={FLOWER_POP} transition={SETTLE} style={{ originX: 0.5, originY: 0.9 }}>
           <g id='back-petals' transform='translate(71 108)'>
             {BACK.map((p, i) => (
               <g key={i} transform={`rotate(${p.angle})`}>
@@ -1521,7 +1519,7 @@ const LumoraSmallFlowers = (props: SVGProps< SVGSVGElement >) => {
           <path d='M32 46 C 32 52, 33 57, 34 61' />
         </g>
         <path d='M33 56 C 24 50, 14 50, 10 54 C 16 59, 26 60, 33 56 Z' fill='#428458' />
-        <m.g whileHover={FLOWER_POP} transition={SETTLE}>
+        <m.g whileHover={FLOWER_POP} whileTap={FLOWER_POP} transition={SETTLE}>
           <Bloom cx={32} cy={38} petals={5} len={17} half={8} fill='#ffffff' stroke='#e6e3da' core={5} />
         </m.g>
       </m.g>
@@ -1532,7 +1530,7 @@ const LumoraSmallFlowers = (props: SVGProps< SVGSVGElement >) => {
           <path d='M154 44 C 155 51, 155 56, 156 61' />
         </g>
         <path d='M155 54 C 164 47, 175 47, 180 51 C 173 57, 162 58, 155 54 Z' fill='#2f6b44' />
-        <m.g whileHover={FLOWER_POP} transition={SETTLE}>
+        <m.g whileHover={FLOWER_POP} whileTap={FLOWER_POP} transition={SETTLE}>
           <Bloom cx={154} cy={36} petals={6} len={15} half={7} fill='#fd9d82' core={4.5} />
         </m.g>
       </m.g>
@@ -1552,9 +1550,9 @@ const { LumoraStar } = (() => {
 const LumoraStar = (props: SVGProps< SVGSVGElement >) => {
   return (
     <svg viewBox='0 0 66 64' aria-hidden {...props}>
-      {/* idle: floats up and down; hover: grows a little */}
+      {/* idle: floats up and down; hover/tap: grows a little */}
       <m.g {...STAR_FLOAT}>
-        <m.g whileHover={STAR_POP} transition={SETTLE}>
+        <m.g whileHover={STAR_POP} whileTap={STAR_POP} transition={SETTLE}>
           <path
             d='M33 2 L41.5 22.5 L63 24 L46.5 38.5 L52 61 L33 49 L13.5 61.5 L19.5 38.5 L3 24.5 L24.5 22 Z'
             fill='#fec405'
@@ -1604,6 +1602,7 @@ const LumoraSunCharacter = ({ eyesStyle, ...props }: LumoraSunCharacterProps) =>
       <m.g
         id='sun'
         whileHover={SUN_POP}
+        whileTap={SUN_POP}
         transition={SETTLE}
         style={{ transformBox: 'view-box', transformOrigin: `${CENTER.x}px ${CENTER.y}px` }}
       >
@@ -1611,6 +1610,7 @@ const LumoraSunCharacter = ({ eyesStyle, ...props }: LumoraSunCharacterProps) =>
           <m.g
             id='sun-rays'
             {...SUN_SPIN}
+            className='lm-sun-spin'
             style={{ transformBox: 'view-box', transformOrigin: `${CENTER.x}px ${CENTER.y}px` }}
           >
             <polygon points={spikePoints} fill='#fec405' stroke='#fec405' strokeWidth='4' strokeLinejoin='round' />
@@ -1686,11 +1686,11 @@ const LumoraWhiteFlowers = (props: SVGProps< SVGSVGElement >) => {
           <path d='M44 176 C 30 160, 12 158, 4 164 C 14 178, 32 182, 44 176 Z' fill='#28633c' />
         </g>
 
-        {/* hover: each daisy head grows a little on its own */}
-        <m.g id='large-daisy' whileHover={FLOWER_POP} transition={SETTLE}>
+        {/* hover/tap: each daisy head grows a little on its own */}
+        <m.g id='large-daisy' whileHover={FLOWER_POP} whileTap={FLOWER_POP} transition={SETTLE}>
           <Daisy cx={107} cy={56} petals={6} len={48} half={20} core={11} />
         </m.g>
-        <m.g id='small-daisy' whileHover={FLOWER_POP} transition={SETTLE}>
+        <m.g id='small-daisy' whileHover={FLOWER_POP} whileTap={FLOWER_POP} transition={SETTLE}>
           <Daisy cx={37} cy={116} petals={5} len={30} half={13} core={7} />
         </m.g>
       </m.g>
@@ -1710,7 +1710,7 @@ const { LumoraYellowCircle } = (() => {
 const LumoraYellowCircle = (props: SVGProps< SVGSVGElement >) => {
   return (
     <svg viewBox='0 0 104 104' aria-hidden {...props}>
-      <m.g whileHover={SUN_POP} transition={SETTLE}>
+      <m.g whileHover={SUN_POP} whileTap={SUN_POP} transition={SETTLE}>
         <path
           d='M52 3 C 80 2, 102 24, 101 53 C 100 80, 78 102, 50 101 C 23 100, 2 78, 3 51 C 4 24, 25 4, 52 3 Z'
           fill='#fec430'
@@ -1737,7 +1737,7 @@ type EntranceType = {
   duration?: number
 }
 
-// The custom properties .lm-enter (index.css) reads for one element's entrance
+// The custom properties read for element entrance
 const revealStyle = ({ delay = 0, y = 16, scale = 1, duration = INTRO.duration }: EntranceType) =>
   ({
     '--lm-delay': `${delay}s`,
@@ -1752,15 +1752,18 @@ type HeroRevealProps = {
   y?: number | string
   as?: 'div' | 'span'
   className?: string
+  variant?: 'headline' | 'fade' | 'sun' | 'piece'
 }
 
 /**
- * One-shot entrance used by the copy: fade in while sliding into place. A CSS animation, so it plays
- * from the first paint rather than after hydration, and the copy stays server-rendered
+ * Entrance used by the copy: fade in while sliding into place.
+ * Uses dedicated CSS animations that are 100% reliable on iOS Safari and mobile browsers.
  */
-const HeroReveal = ({ children, delay = 0, y = 16, as: Tag = 'div', className }: HeroRevealProps) => {
+const HeroReveal = ({ children, delay = 0, y = 16, as: Tag = 'div', className, variant }: HeroRevealProps) => {
+  const isHeadline = variant === 'headline' || y === '100%'
+  const enterClass = isHeadline ? 'lm-enter-headline' : 'lm-enter-fade'
   return (
-    <Tag style={revealStyle({ delay, y })} className={cn('lm-enter', className)}>
+    <Tag style={revealStyle({ delay, y })} className={cn(enterClass, className)}>
       {children}
     </Tag>
   )
@@ -2098,7 +2101,7 @@ const HeroContent = () => {
   const { COPY } = useBrusha()
 
   return (
-    <div className='lm-copy lm-pad-x relative z-10 pt-[max(40px,calc(3*var(--u)))]'>
+    <div className='lm-copy lm-pad-x relative z-10 pt-[max(24px,calc(2.5*var(--u)))] sm:pt-[max(36px,calc(3*var(--u)))]'>
       <h1 className='lm-headline flex flex-col'>
         {/**
          * Each line slides up from behind its own mask; the small padding keeps the glyph tops
@@ -2106,16 +2109,16 @@ const HeroContent = () => {
          * margins cancel it exactly instead of collapsing
          */}
         {COPY.headline.map((line, i) => (
-          <span key={line} className='-my-[0.06em] block overflow-hidden py-[0.06em] md:whitespace-nowrap'>
-            <HeroReveal as='span' delay={INTRO.headline[i] ?? 0} y='100%' className='block'>
+          <span key={line} className='-my-[0.04em] block overflow-hidden py-[0.04em] md:whitespace-nowrap'>
+            <HeroReveal as='span' delay={INTRO.headline[i] ?? 0} y='100%' variant='headline' className='block'>
               {line}
             </HeroReveal>
           </span>
         ))}
       </h1>
 
-      <HeroReveal delay={INTRO.description}>
-        <p className='lm-description text-lm-body mt-[max(16px,calc(1.1*var(--u)))] max-w-[550px] md:w-fit md:max-w-none md:pl-[calc(0.15*var(--u))]'>
+      <HeroReveal delay={INTRO.description} variant='fade'>
+        <p className='lm-description text-lm-body mt-[max(14px,calc(1*var(--u)))] max-w-[550px] md:w-fit md:max-w-none md:pl-[calc(0.15*var(--u))]'>
           {COPY.description.map(line => (
             <span key={line} className='md:block'>
               {line}{' '}
@@ -2124,8 +2127,8 @@ const HeroContent = () => {
         </p>
       </HeroReveal>
 
-      <HeroReveal delay={INTRO.cta}>
-        <div className='mt-[max(20px,calc(1.4*var(--u)))] flex flex-wrap items-center gap-x-[max(24px,calc(2.3*var(--u)))] gap-y-4'>
+      <HeroReveal delay={INTRO.cta} variant='fade'>
+        <div className='mt-[max(18px,calc(1.3*var(--u)))] flex flex-wrap items-center gap-x-[max(24px,calc(2.3*var(--u)))] gap-y-4'>
           <a
             href={COPY.primaryCta.href}
             className='lm-primary-cta bg-lm-primary flex h-11 items-center gap-3 rounded-full px-6 text-[15px] font-medium text-white md:h-[max(40px,calc(2.9*var(--u)))] md:px-[max(22px,calc(1.75*var(--u)))] md:text-[max(15px,calc(1.1*var(--u)))]'
@@ -2285,7 +2288,7 @@ const HeroIllustration = () => {
 
   // reducedMotion='user': hover reactions skip their movement for visitors who ask for less motion
   return (
-    <MotionConfig reducedMotion={REDUCED === undefined ? 'user' : REDUCED ? 'always' : 'never'}>
+    <MotionConfig reducedMotion={REDUCED === true ? 'always' : 'never'}>
       <m.div
         ref={ref}
         aria-hidden
@@ -2301,57 +2304,66 @@ const HeroIllustration = () => {
           if (piece.enter === 'detail') detailIndex++
           else if (piece.enter !== 'figure' && piece.enter !== 'sun') artworkIndex++
 
+          const isSun = piece.enter === 'sun'
+          const enterClass = isSun ? 'lm-enter-sun' : 'lm-enter-piece'
+
           return (
             <div
               key={name}
               data-piece={name}
-              className={cn('lm-enter absolute', minor && 'hidden sm:block')}
+              className={cn(enterClass, 'absolute', minor && 'hidden sm:block')}
               style={{
                 left: pct(slot.x, width),
                 top: pct(slot.y, height),
                 width: pct(slot.w, width),
-                rotate: `${slot.rotate ?? 0}deg`,
-                transform: slot.flip ? 'scaleX(-1)' : undefined,
                 ...revealStyle(enter)
               }}
             >
-              {/**
-               * The paper texture sits on this inner layer, so the entrance moves an already-textured layer
-               * instead of re-filtering it every frame. On hover the girl's sweater changes colour: a recoloured
-               * copy fades in on top
-               */}
-              {name === 'girl' ? !GIRL.src ? null : (
-                <div className='group pointer-events-auto relative'>
-                  <img
-                    src={GIRL.src}
-                    alt={GIRL.alt}
-                    width={GIRL.width}
-                    height={GIRL.height}
-                    decoding='async'
-                    className='block h-auto w-full'
-                  />
-                  <img
-                    src={GIRL.hoverSrc}
-                    alt=''
-                    width={GIRL.width}
-                    height={GIRL.height}
-                    decoding='async'
-                    className='absolute inset-0 block h-auto w-full opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100'
-                  />
-                </div>
-              ) : name === 'sun' ? (
-                <div className='lm-piece lm-touchable'>
-                  <LumoraSunCharacter className='block h-auto w-full overflow-visible' eyesStyle={sunEyesStyle} />
-                </div>
-              ) : (
-                <div
-                  className={cn(
-                    !piece.bare && ['lm-piece', piece.wide && 'lm-piece-wide', piece.hover && 'lm-touchable']
-                  )}
-                >
-                  <Svg className='block h-auto w-full overflow-visible' />
-                </div>
-              )}
+              <div
+                style={{
+                  rotate: `${slot.rotate ?? 0}deg`,
+                  transform: slot.flip ? 'scaleX(-1)' : undefined
+                }}
+                className='h-full w-full'
+              >
+                {/**
+                 * The paper texture sits on this inner layer, so the entrance moves an already-textured layer
+                 * instead of re-filtering it every frame. On hover the girl's sweater changes colour: a recoloured
+                 * copy fades in on top
+                 */}
+                {name === 'girl' ? !GIRL.src ? null : (
+                  <div className='group pointer-events-auto relative'>
+                    <img
+                      src={GIRL.src}
+                      alt={GIRL.alt}
+                      width={GIRL.width}
+                      height={GIRL.height}
+                      decoding='async'
+                      className='block h-auto w-full'
+                    />
+                    <img
+                      src={GIRL.hoverSrc}
+                      alt=''
+                      width={GIRL.width}
+                      height={GIRL.height}
+                      decoding='async'
+                      className='absolute inset-0 block h-auto w-full opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100'
+                    />
+                  </div>
+                ) : name === 'sun' ? (
+                  <div className='lm-piece lm-touchable'>
+                    <LumoraSunCharacter className='block h-auto w-full overflow-visible' eyesStyle={sunEyesStyle} />
+                  </div>
+                ) : (
+                  <div
+                    className={cn(
+                      !piece.bare && ['lm-piece', piece.wide && 'lm-piece-wide', piece.hover && 'lm-touchable']
+                    )}
+                  >
+                    <Svg className='block h-auto w-full overflow-visible' />
+                  </div>
+                )}
+              </div>
             </div>
           )
         })}
@@ -2435,16 +2447,14 @@ const BLOCK_CSS = `/* Theme tokens of the block (its @theme), scoped to the comp
 .lm-card {
   container-type: inline-size;
   --u: 1cqw;
-  min-height: 100svh;
+  min-height: 100dvh;
   max-width: 100vw;
   overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Desktop is exactly one screen with no scroll. The layout needs 64 units of
-   height (copy ≤ 36u, then a clear gap above the artwork's tallest left-hand
-   piece, the sun, which reaches ~22u up from the bottom). On screens wider than
-   that proportion the unit follows the height instead (100svh / 64 ≈ 1.5625svh),
-   so the copy and the artwork can never collide. */
 @media (min-width: 1024px) {
   .lm-card {
     --u: min(1cqw, 1.5625svh);
@@ -2452,25 +2462,69 @@ const BLOCK_CSS = `/* Theme tokens of the block (its @theme), scoped to the comp
   }
 }
 
-/* One-shot entrance for the copy, nav and artwork: fade in while sliding (and scaling) into place.
-   CSS, not motion, so it plays from the first paint instead of waiting for hydration. Each element
-   sets --lm-delay, --lm-dur, --lm-y and --lm-s (revealStyle in hero-reveal.tsx). Fill 'backwards':
-   nothing lingers once it has played. */
-.lm-enter {
-  animation: lm-enter var(--lm-dur, 0.75s) cubic-bezier(0.22, 1, 0.36, 1) var(--lm-delay, 0s) backwards;
+/* Bulletproof CSS entrances for all browsers including iOS Safari */
+.lm-enter-headline {
+  animation: lm-enter-headline var(--lm-dur, 0.7s) cubic-bezier(0.22, 1, 0.36, 1) var(--lm-delay, 0s) both;
+  will-change: transform, opacity;
 }
 
-@keyframes lm-enter {
+@keyframes lm-enter-headline {
   from {
     opacity: 0;
-    translate: 0 var(--lm-y, 16px);
-    scale: var(--lm-s, 1);
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .lm-enter {
-    animation: none;
+.lm-enter-fade,
+.lm-enter {
+  animation: lm-enter-fade var(--lm-dur, 0.65s) cubic-bezier(0.22, 1, 0.36, 1) var(--lm-delay, 0s) both;
+  will-change: transform, opacity;
+}
+
+@keyframes lm-enter-fade {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lm-enter-sun {
+  animation: lm-enter-sun var(--lm-dur, 0.9s) cubic-bezier(0.22, 1, 0.36, 1) var(--lm-delay, 0.2s) both;
+  will-change: transform, opacity;
+}
+
+@keyframes lm-enter-sun {
+  from {
+    opacity: 0;
+    transform: translateY(-160px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lm-enter-piece {
+  animation: lm-enter-piece var(--lm-dur, 0.75s) cubic-bezier(0.22, 1, 0.36, 1) var(--lm-delay, 0s) both;
+  will-change: transform, opacity;
+}
+
+@keyframes lm-enter-piece {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -2490,15 +2544,8 @@ const BLOCK_CSS = `/* Theme tokens of the block (its @theme), scoped to the comp
   padding-right: max(20px, calc(2.25 * var(--u)));
 }
 
-/* Breathing room between the buttons and the artwork on phones. */
 .lm-copy {
-  padding-bottom: 28px;
-}
-
-/* The copy box reaches down over the artwork (its bottom padding keeps the text
-   clear of it), so the box itself ignores the pointer and only the real text and
-   links take it. Otherwise it would swallow hovers meant for the plants and flowers. */
-.lm-copy {
+  padding-bottom: 24px;
   pointer-events: none;
 }
 
@@ -2508,20 +2555,21 @@ const BLOCK_CSS = `/* Theme tokens of the block (its @theme), scoped to the comp
   pointer-events: auto;
 }
 
-/* ---------- Type ---------- */
+/* Headline with clamp to prevent line wrapping jumps on mobile */
 .lm-headline {
   font-family: var(--font-lm-display);
   font-weight: 800;
   font-stretch: 107%;
-  font-size: calc(13cqw - 1px);
-  line-height: 0.92;
-  letter-spacing: -0.03em;
+  font-size: clamp(28px, 9.2cqw, 52px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
+  word-break: keep-all;
 }
 
 .lm-description {
   font-size: 16px;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 /* ---------- Illustration ----------
@@ -2533,7 +2581,7 @@ const BLOCK_CSS = `/* Theme tokens of the block (its @theme), scoped to the comp
   width: 125%;
   max-width: 125%;
   left: 50%;
-  translate: -50% 0;
+  transform: translateX(-50%);
   margin: 0;
   margin-top: auto;
   aspect-ratio: 1424 / 457;
@@ -2612,7 +2660,7 @@ const BLOCK_CSS = `/* Theme tokens of the block (its @theme), scoped to the comp
   .lm-illustration {
     left: 50%;
     width: calc(100 * var(--u));
-    translate: -50% 0;
+    transform: translateX(-50%);
   }
 }
 
@@ -2629,9 +2677,9 @@ const BLOCK_CSS = `/* Theme tokens of the block (its @theme), scoped to the comp
   }
 
   .lm-illustration {
-    left: -29.8%; /* 175% wide, still centred on the girl */
+    left: 50%;
     width: 175%;
-    translate: none;
+    transform: translateX(-50%);
   }
 }
 

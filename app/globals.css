@@ -42,3 +42,262 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #10b981;
 }
+
+/* =========================================================
+   Geek&Bloom Hero (Brusha) - Optimized for Mobile & Safari
+   ========================================================= */
+
+[data-slot='brusha'],
+.lm-card {
+  --color-lm-card: #f8f6f1;
+  --color-lm-ink: #121212;
+  --color-lm-body: #4a4a48;
+  --color-lm-primary: #d24b3e;
+  --color-lm-primary-deep: #b93f33;
+
+  --font-lm-display: 'Archivo', 'Arial Black', ui-sans-serif, system-ui, sans-serif;
+  --font-lm-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+}
+
+.lm-card {
+  container-type: inline-size;
+  --u: 1cqw;
+  min-height: 100dvh;
+  max-width: 100vw;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  .lm-card {
+    --u: min(1cqw, 1.5625svh);
+    height: 100svh;
+  }
+}
+
+/* Paper grain overlay */
+.lm-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.3 0 0 0 0 0.25 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  opacity: 0.22;
+}
+
+.lm-pad-x {
+  padding-left: max(20px, calc(2.5 * var(--u)));
+  padding-right: max(20px, calc(2.25 * var(--u)));
+}
+
+.lm-copy {
+  padding-bottom: 24px;
+  pointer-events: none;
+}
+
+.lm-copy h1,
+.lm-copy p,
+.lm-copy a {
+  pointer-events: auto;
+}
+
+/* Headline with clamp to prevent line wrapping jumps on mobile */
+.lm-headline {
+  font-family: var(--font-lm-display);
+  font-weight: 800;
+  font-stretch: 107%;
+  font-size: clamp(28px, 9.2cqw, 52px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  word-break: keep-all;
+}
+
+.lm-description {
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+@media (min-width: 768px) {
+  .lm-headline {
+    font-size: calc(8.8 * var(--u) - 1px);
+    line-height: 0.95;
+  }
+
+  .lm-description {
+    font-size: clamp(15px, calc(1.32 * var(--u)), 21px);
+    line-height: 1.25;
+  }
+
+  .lm-copy {
+    padding-left: calc(2 * var(--u));
+    padding-bottom: calc(24 * var(--u));
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* Illustration strip */
+.lm-illustration {
+  position: relative;
+  width: 125%;
+  max-width: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  margin-top: auto;
+  aspect-ratio: 1424 / 457;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  .lm-illustration {
+    width: 115%;
+    max-width: 115%;
+  }
+}
+
+@media (min-width: 768px) {
+  .lm-illustration {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    transform: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lm-illustration {
+    left: 50%;
+    width: calc(100 * var(--u));
+    transform: translateX(-50%);
+  }
+}
+
+@media (min-width: 768px) and (orientation: portrait) {
+  .lm-headline {
+    font-size: calc(10 * var(--u) - 1px);
+  }
+
+  .lm-copy {
+    padding-bottom: calc(36 * var(--u));
+  }
+
+  .lm-illustration {
+    left: 50%;
+    width: 175%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Mobile paper filter override for high performance */
+@media (max-width: 768px) {
+  .lm-piece,
+  .lm-piece.lm-piece-wide {
+    filter: none !important;
+  }
+}
+
+.lm-piece {
+  filter: url(#lumora-paper);
+}
+
+.lm-piece.lm-piece-wide {
+  filter: url(#lumora-paper-wide);
+}
+
+.lm-touchable svg * {
+  pointer-events: visiblePainted;
+  cursor: pointer;
+}
+
+/* Standardized Entrance Animations for iOS Safari & All Browsers */
+.lm-enter-headline {
+  animation: lm-enter-headline var(--lm-dur, 0.7s) cubic-bezier(0.22, 1, 0.36, 1) var(--lm-delay, 0s) both;
+  will-change: transform, opacity;
+}
+
+@keyframes lm-enter-headline {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lm-enter-fade,
+.lm-enter {
+  animation: lm-enter-fade var(--lm-dur, 0.65s) cubic-bezier(0.22, 1, 0.36, 1) var(--lm-delay, 0s) both;
+  will-change: transform, opacity;
+}
+
+@keyframes lm-enter-fade {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lm-enter-sun {
+  animation: lm-enter-sun var(--lm-dur, 0.9s) cubic-bezier(0.22, 1, 0.36, 1) var(--lm-delay, 0.2s) both;
+  will-change: transform, opacity;
+}
+
+@keyframes lm-enter-sun {
+  from {
+    opacity: 0;
+    transform: translateY(-160px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lm-enter-piece {
+  animation: lm-enter-piece var(--lm-dur, 0.75s) cubic-bezier(0.22, 1, 0.36, 1) var(--lm-delay, 0s) both;
+  will-change: transform, opacity;
+}
+
+@keyframes lm-enter-piece {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sun Rays Infinite Spin - GPU accelerated for Safari WebKit */
+@keyframes lm-sun-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.lm-sun-spin {
+  transform-origin: 116px 98px;
+  -webkit-transform-origin: 116px 98px;
+  animation: lm-sun-spin 50s linear infinite;
+}
+

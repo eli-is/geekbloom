@@ -16,6 +16,7 @@ export default function Home() {
       {/* 1. Hero מאויר ומרשים עם Brusha ולוגו רשמי מוזהב */}
       <Brusha
         brand="Geek&Bloom"
+        reducedMotion={false}
         customLogo={<GeekBloomLogo size="md" />}
         copy={{
           headline: ["הטבע פוגש את", "תרבות הגיקים"],
