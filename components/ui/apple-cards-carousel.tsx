@@ -124,21 +124,21 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
       value={{ onCardClose: handleCardClose, currentIndex, isDraggingRef }}
     >
       <div className="relative w-full group/carousel select-none">
-        {/* כפתור חץ שמאלה צף מעל הקרוסלה */}
+        {/* כפתור חץ שמאלה צף מעל הקרוסלה - מוצג במסכים בינוניים ומעלה כדי לא להסתיר מגע בנייד */}
         <button
           type="button"
           aria-label="גלול שמאלה"
-          className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-neutral-950/80 border border-emerald-500/50 text-emerald-300 shadow-[0_8px_25px_rgba(0,0,0,0.7)] backdrop-blur-md hover:bg-emerald-600 hover:text-white hover:scale-110 active:scale-95 transition-all"
+          className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex h-12 w-12 items-center justify-center rounded-full bg-neutral-950/80 border border-emerald-500/50 text-emerald-300 shadow-[0_8px_25px_rgba(0,0,0,0.7)] backdrop-blur-md hover:bg-emerald-600 hover:text-white hover:scale-110 active:scale-95 transition-all"
           onClick={scrollLeft}
         >
           <IconChevronLeft className="h-7 w-7" strokeWidth={2.5} />
         </button>
 
-        {/* כפתור חץ ימינה צף מעל הקרוסלה */}
+        {/* כפתור חץ ימינה צף מעל הקרוסלה - מוצג במסכים בינוניים ומעלה */}
         <button
           type="button"
           aria-label="גלול ימינה"
-          className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-neutral-950/80 border border-emerald-500/50 text-emerald-300 shadow-[0_8px_25px_rgba(0,0,0,0.7)] backdrop-blur-md hover:bg-emerald-600 hover:text-white hover:scale-110 active:scale-95 transition-all"
+          className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex h-12 w-12 items-center justify-center rounded-full bg-neutral-950/80 border border-emerald-500/50 text-emerald-300 shadow-[0_8px_25px_rgba(0,0,0,0.7)] backdrop-blur-md hover:bg-emerald-600 hover:text-white hover:scale-110 active:scale-95 transition-all"
           onClick={scrollRight}
         >
           <IconChevronRight className="h-7 w-7" strokeWidth={2.5} />
@@ -153,9 +153,10 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
           onWheel={handleWheel}
-          className="flex w-full overflow-x-auto overscroll-x-contain scroll-smooth py-6 md:py-12 cursor-grab active:cursor-grabbing [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          className="flex w-full overflow-x-auto overscroll-x-contain py-6 md:py-12 cursor-grab active:cursor-grabbing touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          style={{ WebkitOverflowScrolling: "touch" }}
         >
-          <div className="flex flex-row justify-start gap-4 md:gap-6 px-6 md:px-16 w-max">
+          <div className="flex flex-row justify-start gap-3 sm:gap-4 md:gap-6 px-4 md:px-16 w-max">
             {items.map((item, index) => (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -301,7 +302,7 @@ export const Card = ({
         onClick={handleOpen}
         dir="rtl"
         whileHover={{ y: -6, transition: { duration: 0.2 } }}
-        className="relative z-10 flex h-80 w-64 md:h-[32rem] md:w-96 flex-col items-start justify-start overflow-hidden rounded-3xl bg-neutral-900 border border-neutral-800 shadow-xl group text-right"
+        className="relative z-10 flex h-72 w-56 sm:h-80 sm:w-64 md:h-[32rem] md:w-96 flex-col items-start justify-start overflow-hidden rounded-3xl bg-neutral-900 border border-neutral-800 shadow-xl group text-right"
       >
         <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-full bg-gradient-to-b from-black/80 via-black/20 to-black/70" />
         <div className="relative z-40 p-6 md:p-8 flex flex-col items-start text-right w-full">

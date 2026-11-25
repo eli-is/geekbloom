@@ -16,25 +16,26 @@ export const Card = React.memo(
     setHovered: React.Dispatch<React.SetStateAction<number | null>>;
   }) => (
     <div
+      onClick={() => setHovered(hovered === index ? null : index)}
       onMouseEnter={() => setHovered(index)}
       onMouseLeave={() => setHovered(null)}
       className={cn(
-        "rounded-lg relative bg-gray-100 dark:bg-neutral-900 overflow-hidden h-60 md:h-96 w-full transition-all duration-300 ease-out",
+        "rounded-2xl relative bg-gray-100 dark:bg-neutral-900 overflow-hidden h-64 md:h-96 w-full transition-all duration-300 ease-out cursor-pointer",
         hovered !== null && hovered !== index && "blur-sm scale-[0.98]"
       )}
     >
       <img
         src={card.src}
         alt={card.title}
-        className="object-cover absolute inset-0"
+        className="object-cover absolute inset-0 w-full h-full"
       />
       <div
         className={cn(
-          "absolute inset-0 bg-black/50 flex items-end py-8 px-4 transition-opacity duration-300",
-          hovered === index ? "opacity-100" : "opacity-0"
+          "absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex items-end py-6 px-4 transition-opacity duration-300",
+          hovered === index ? "opacity-100" : "opacity-90 md:opacity-0"
         )}
       >
-        <div className="text-xl md:text-2xl font-medium bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-200">
+        <div className="text-lg md:text-2xl font-bold text-white drop-shadow">
           {card.title}
         </div>
       </div>

@@ -73,7 +73,7 @@ export function GeekBloomLogo({
 
       {withTagline && (
         <span
-          className={`font-serif tracking-[0.18em] uppercase font-semibold text-[#f1d89b] mt-0.5 ${tagClasses[size]} drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]`}
+          className={`font-serif tracking-[0.14em] sm:tracking-[0.18em] uppercase font-semibold text-[#f1d89b] mt-0.5 text-[8.5px] sm:text-[10px] md:text-[11px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]`}
           style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
         >
           Where Nature Meets Geek Culture

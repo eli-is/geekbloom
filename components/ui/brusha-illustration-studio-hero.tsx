@@ -2025,7 +2025,7 @@ const HeroNavbar = () => {
         </nav>
 
         {/* The wrapper animates, so the button's own hover lift (CSS transform) stays intact */}
-        <div style={revealStyle({ delay: NAV_INTRO.cta, y: 5, scale: 0.96, duration: 0.45 })} className='lm-enter'>
+        <div style={revealStyle({ delay: NAV_INTRO.cta, y: 5, scale: 0.96, duration: 0.45 })} className='lm-enter hidden sm:block'>
           <a
             href={COPY.navCta.href}
             className='lm-nav-cta bg-lm-primary flex h-10 items-center gap-2 rounded-full px-4 text-[14px] font-medium text-white sm:gap-2.5 sm:px-[18px] md:h-[max(36px,calc(2.65*var(--u)))] md:px-[max(18px,calc(1.4*var(--u)))] md:text-[max(14px,calc(1.06*var(--u)))]'
@@ -2060,13 +2060,23 @@ const HeroNavbar = () => {
             exit={{ opacity: 0, transform: 'translateY(-8px)' }}
             transition={reduce ? { duration: 0 } : { duration: 0.25, ease: EASE }}
           >
-            <ul className='bg-lm-card border-lm-ink/10 ml-auto flex w-full max-w-[280px] flex-col rounded-2xl border p-2 shadow-[0_18px_40px_-20px_rgb(18_18_18/0.35)]'>
+            <ul className='bg-[#0b1c12] border border-emerald-500/40 text-white ml-auto flex w-full max-w-[280px] flex-col rounded-2xl p-3 shadow-2xl'>
+              <li className='mb-2'>
+                <a
+                  href={COPY.navCta.href}
+                  onClick={handleClose}
+                  className='bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center gap-2 rounded-xl py-2.5 px-4 font-bold text-[14px] shadow-md'
+                >
+                  <span>{COPY.navCta.label}</span>
+                  <ArrowRight className='size-4' />
+                </a>
+              </li>
               {NAV_LINKS.map(link => (
                 <li key={link.label}>
                   <a
                     href={link.href}
                     onClick={handleClose}
-                    className='hover:text-lm-primary focus-visible:text-lm-primary block rounded-xl px-4 py-3 text-[16px] font-medium'
+                    className='hover:text-emerald-400 text-neutral-200 block rounded-xl px-4 py-2.5 text-[15px] font-medium transition'
                   >
                     {link.label}
                   </a>
@@ -2426,6 +2436,8 @@ const BLOCK_CSS = `/* Theme tokens of the block (its @theme), scoped to the comp
   container-type: inline-size;
   --u: 1cqw;
   min-height: 100svh;
+  max-width: 100vw;
+  overflow: hidden;
 }
 
 /* Desktop is exactly one screen with no scroll. The layout needs 64 units of
@@ -2518,12 +2530,22 @@ const BLOCK_CSS = `/* Theme tokens of the block (its @theme), scoped to the comp
    From 768px it is pinned to the card's bottom edge at full width. */
 .lm-illustration {
   position: relative;
-  /* phones: drawn wider than the screen and cropped, centred on the girl, who sits
-     at ~45.6% of the strip: margin = 50% − 0.456 × width */
-  width: 240%;
-  margin-left: -59.5%;
-  margin-top: auto; /* pinned to the bottom of the screen-tall hero */
+  width: 125%;
+  max-width: 125%;
+  left: 50%;
+  translate: -50% 0;
+  margin: 0;
+  margin-top: auto;
   aspect-ratio: 1424 / 457;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .lm-piece,
+  .lm-piece.lm-piece-wide {
+    filter: none !important;
+  }
 }
 
 /* Paper texture per piece (defined by LumoraPaperTexture). Per piece rather than on
@@ -2544,26 +2566,10 @@ const BLOCK_CSS = `/* Theme tokens of the block (its @theme), scoped to the comp
   pointer-events: visiblePainted;
 }
 
-/* large phones / small tablets: a little less zoom, so the strip isn't too tall */
-@media (min-width: 480px) {
+@media (min-width: 480px) and (max-width: 767px) {
   .lm-illustration {
-    width: 190%;
-    margin-left: -36.6%;
-  }
-}
-
-@media (min-width: 640px) {
-  .lm-illustration {
-    width: 165%;
-    margin-left: -25.2%;
-  }
-}
-
-/* short phones: a slightly smaller strip so the hero needs less scrolling */
-@media (max-width: 479px) and (max-height: 700px) {
-  .lm-illustration {
-    width: 210%;
-    margin-left: -45.8%;
+    width: 115%;
+    max-width: 115%;
   }
 }
 

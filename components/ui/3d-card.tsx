@@ -28,6 +28,7 @@ export const CardContainer = ({
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
+    if (typeof window !== "undefined" && window.innerWidth < 768) return;
     const { left, top, width, height } =
       containerRef.current.getBoundingClientRect();
     const x = (e.clientX - left - width / 2) / 25;
@@ -86,7 +87,7 @@ export const CardBody = ({
   return (
     <div
       className={cn(
-        "h-96 w-96 [transform-style:preserve-3d]  [&>*]:[transform-style:preserve-3d]",
+        "w-full max-w-full h-auto [transform-style:preserve-3d] [&>*]:[transform-style:preserve-3d]",
         className
       )}
     >
