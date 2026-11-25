@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "motion/react";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { Leaf, Gamepad2, Sparkles, MessageCircle, ArrowLeft } from "lucide-react";
 
@@ -22,7 +23,14 @@ export function DualUniverseSection() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* כרטיס תלת-ממד: עולם הבוטניקה (The Bloom) */}
-        <CardContainer className="inter-var w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="w-full"
+        >
+          <CardContainer className="inter-var w-full">
           <CardBody className="bg-neutral-900/90 relative group/card hover:shadow-2xl hover:shadow-emerald-500/10 border-neutral-800 border w-full h-auto rounded-3xl p-6 md:p-8">
             <div className="flex items-center justify-between mb-4">
               <span className="flex items-center gap-2 text-emerald-400 font-bold text-sm tracking-wide">
@@ -89,9 +97,17 @@ export function DualUniverseSection() {
             </div>
           </CardBody>
         </CardContainer>
+        </motion.div>
 
         {/* כרטיס תלת-ממד: עולם הגיקים והאספנות (The Geek) */}
-        <CardContainer className="inter-var w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+          className="w-full"
+        >
+          <CardContainer className="inter-var w-full">
           <CardBody className="bg-neutral-900/90 relative group/card hover:shadow-2xl hover:shadow-purple-500/10 border-neutral-800 border w-full h-auto rounded-3xl p-6 md:p-8">
             <div className="flex items-center justify-between mb-4">
               <span className="flex items-center gap-2 text-purple-400 font-bold text-sm tracking-wide">
@@ -158,6 +174,7 @@ export function DualUniverseSection() {
             </div>
           </CardBody>
         </CardContainer>
+        </motion.div>
       </div>
     </section>
   );

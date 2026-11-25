@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "motion/react";
 import { Star, MapPin, HeartHandshake, Truck, ExternalLink, Quote, Sparkles } from "lucide-react";
 
 export function TrustBar() {
@@ -32,15 +33,23 @@ export function TrustBar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           {items.map((item, idx) => (
-            <div key={idx} className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-right gap-3">
-              <div className="p-3 rounded-2xl bg-neutral-800/80 border border-neutral-700/50 flex-shrink-0">
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ duration: 0.4, delay: idx * 0.1, ease: "easeOut" }}
+              whileTap={{ scale: 0.97 }}
+              className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-right gap-3 cursor-default select-none"
+            >
+              <div className="p-3 rounded-2xl bg-neutral-800/80 border border-neutral-700/50 flex-shrink-0 shadow-sm">
                 {item.icon}
               </div>
               <div>
                 <h4 className="font-bold text-white text-base md:text-lg">{item.title}</h4>
                 <p className="text-xs md:text-sm text-neutral-400 mt-0.5">{item.description}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -129,9 +138,15 @@ export function GoogleReviewsSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {reviews.map((rev, idx) => (
-          <div
+          <motion.div
             key={idx}
-            className="flex flex-col justify-between p-6 rounded-3xl bg-neutral-900/80 border border-neutral-800 hover:border-neutral-700 transition-all hover:shadow-xl hover:shadow-emerald-950/20"
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-30px" }}
+            transition={{ duration: 0.5, delay: idx * 0.08, ease: "easeOut" }}
+            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            whileTap={{ scale: 0.98 }}
+            className="flex flex-col justify-between p-6 rounded-3xl bg-neutral-900/80 border border-neutral-800 hover:border-emerald-500/40 transition-all hover:shadow-xl hover:shadow-emerald-950/20"
           >
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -164,7 +179,7 @@ export function GoogleReviewsSection() {
                 </div>
               )}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "motion/react";
 import { ShaderBackground } from "@/components/ui/fluted-glass-waves";
 import {
   MapPin,
@@ -18,7 +19,13 @@ export function StoreLocationSection() {
   return (
     <section id="contact" className="w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* באנר עליון עם רקע השיידר Fluted Glass */}
-      <div className="relative rounded-3xl overflow-hidden mb-16 border border-emerald-500/20 bg-neutral-900/90 shadow-2xl">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative rounded-3xl overflow-hidden mb-16 border border-emerald-500/20 bg-neutral-900/90 shadow-2xl"
+      >
         <div className="absolute inset-0 opacity-40">
           <ShaderBackground className="w-full h-full" />
         </div>
@@ -39,7 +46,7 @@ export function StoreLocationSection() {
               href="https://waze.com/ul?q=Sokolov%2066%20Herzliya"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-white text-black font-bold text-sm hover:bg-neutral-200 transition-all shadow-lg"
+              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-white text-black font-bold text-sm hover:bg-neutral-200 transition-all shadow-lg active:scale-95"
             >
               <Navigation className="w-4 h-4 text-blue-600" />
               <span>נווט עם Waze</span>
@@ -48,17 +55,23 @@ export function StoreLocationSection() {
               href="https://wa.me/972544998997?text=%D7%94%D7%99%D7%99%20%D7%90%D7%91%D7%99%D7%91%2C%20%D7%90%D7%A0%D7%99%20%D7%91%D7%93%D7%A8%D7%9A%20%D7%9C%D7%97%D7%A0%D7%95%D7%AA%20%D7%91%D7%A1%D7%95%D7%A7%D7%95%D7%9C%D7%95%D7%91%2066"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-emerald-500 text-black font-bold text-sm hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20"
+              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-emerald-500 text-black font-bold text-sm hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20 active:scale-95"
             >
               <MessageCircle className="w-4 h-4" />
               <span>וואטסאפ: 054-4998997</span>
             </a>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* פרטי החנות והמפה */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+        className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+      >
         {/* כרטיס פרטי התקשרות */}
         <div className="p-8 rounded-3xl bg-neutral-900/80 border border-neutral-800 space-y-6">
           <h3 className="text-xl font-bold text-white flex items-center gap-2">
@@ -156,7 +169,7 @@ export function StoreLocationSection() {
             </a>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

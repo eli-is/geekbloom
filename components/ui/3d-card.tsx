@@ -25,32 +25,64 @@ export const CardContainer = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
+  const touchTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
-    if (typeof window !== "undefined" && window.innerWidth < 768) return;
     const { left, top, width, height } =
       containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - left - width / 2) / 25;
-    const y = (e.clientY - top - height / 2) / 25;
+    const x = Math.max(-18, Math.min(18, (e.clientX - left - width / 2) / 20));
+    const y = Math.max(-18, Math.min(18, (e.clientY - top - height / 2) / 20));
     containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
   };
 
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseEnter = (_e: React.MouseEvent<HTMLDivElement>) => {
     setIsMouseEntered(true);
-    if (!containerRef.current) return;
   };
 
-  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseLeave = (_e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     setIsMouseEntered(false);
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
   };
+
+  // תמיכה מלאה במגע ובמובייל: הטיה תלת-ממדית עם האצבע והרמת שכבות עומק
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (touchTimerRef.current) clearTimeout(touchTimerRef.current);
+    setIsMouseEntered(true);
+    if (!containerRef.current || e.touches.length === 0) return;
+    const touch = e.touches[0];
+    const { left, top, width, height } =
+      containerRef.current.getBoundingClientRect();
+    const x = Math.max(-12, Math.min(12, (touch.clientX - left - width / 2) / 16));
+    const y = Math.max(-12, Math.min(12, (touch.clientY - top - height / 2) / 16));
+    containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!containerRef.current || e.touches.length === 0) return;
+    const touch = e.touches[0];
+    const { left, top, width, height } =
+      containerRef.current.getBoundingClientRect();
+    const x = Math.max(-14, Math.min(14, (touch.clientX - left - width / 2) / 15));
+    const y = Math.max(-14, Math.min(14, (touch.clientY - top - height / 2) / 15));
+    containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+  };
+
+  const handleTouchEnd = () => {
+    if (containerRef.current) {
+      containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
+    }
+    touchTimerRef.current = setTimeout(() => {
+      setIsMouseEntered(false);
+    }, 700);
+  };
+
   return (
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
         className={cn(
-          "py-20 flex items-center justify-center",
+          "py-6 sm:py-10 md:py-20 flex items-center justify-center",
           containerClassName
         )}
         style={{
@@ -62,8 +94,12 @@ export const CardContainer = ({
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
           className={cn(
-            "flex items-center justify-center relative transition-all duration-200 ease-linear",
+            "flex items-center justify-center relative transition-all duration-300 ease-out",
             className
           )}
           style={{
@@ -138,7 +174,7 @@ export const CardItem = ({
   return (
     <Tag
       ref={ref}
-      className={cn("w-fit transition duration-200 ease-linear", className)}
+      className={cn("w-fit transition-transform duration-300 ease-out will-change-transform", className)}
       {...rest}
     >
       {children}

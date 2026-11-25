@@ -182,7 +182,8 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between mt-2">
           <div className="text-xs text-neutral-400 flex items-center gap-2">
             <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>טיפ: ניתן לגרור עם העכבר, להשתמש בחיצים או לגלול בגלגלת</span>
+            <span className="hidden sm:inline">טיפ: ניתן לגרור עם העכבר, להשתמש בחיצים או לגלול בגלגלת</span>
+            <span className="inline sm:hidden">החליקו באצבע לדפדוף בקטלוג 👈</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -302,6 +303,7 @@ export const Card = ({
         onClick={handleOpen}
         dir="rtl"
         whileHover={{ y: -6, transition: { duration: 0.2 } }}
+        whileTap={{ scale: 0.97 }}
         className="relative z-10 flex h-72 w-56 sm:h-80 sm:w-64 md:h-[32rem] md:w-96 flex-col items-start justify-start overflow-hidden rounded-3xl bg-neutral-900 border border-neutral-800 shadow-xl group text-right"
       >
         <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-full bg-gradient-to-b from-black/80 via-black/20 to-black/70" />

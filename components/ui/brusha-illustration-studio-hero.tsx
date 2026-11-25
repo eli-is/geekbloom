@@ -1798,7 +1798,7 @@ const useCursorGaze = (anchorRef: RefObject< HTMLElement | null >) => {
   useEffect(() => {
     const hero = anchorRef.current?.closest('section')
 
-    if (!hero || reduce || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+    if (!hero || reduce) return
 
     // The hero's rect is cached: re-read only on the first move after a resize or a scroll, never on every move
     let r = hero.getBoundingClientRect()
@@ -1814,9 +1814,9 @@ const useCursorGaze = (anchorRef: RefObject< HTMLElement | null >) => {
     window.addEventListener('scroll', markStale, { passive: true })
     window.addEventListener('resize', markStale)
 
-    const handlePointerMove = (e: PointerEvent) => {
-      if (e.pointerType !== 'mouse') return
+    let resetTimer: NodeJS.Timeout | null = null
 
+    const handlePointerMove = (e: PointerEvent) => {
       if (stale) {
         r = hero.getBoundingClientRect()
         stale = false
@@ -1824,6 +1824,14 @@ const useCursorGaze = (anchorRef: RefObject< HTMLElement | null >) => {
 
       nx.set(clamp(((e.clientX - r.left) / r.width) * 2 - 1))
       ny.set(clamp(((e.clientY - r.top) / r.height) * 2 - 1))
+
+      if (e.pointerType === 'touch') {
+        if (resetTimer) clearTimeout(resetTimer)
+        resetTimer = setTimeout(() => {
+          nx.set(0)
+          ny.set(0)
+        }, 2200)
+      }
     }
 
     const handlePointerLeave = () => {
@@ -1831,13 +1839,16 @@ const useCursorGaze = (anchorRef: RefObject< HTMLElement | null >) => {
       ny.set(0)
     }
 
-    hero.addEventListener('pointermove', handlePointerMove)
+    hero.addEventListener('pointerdown', handlePointerMove, { passive: true })
+    hero.addEventListener('pointermove', handlePointerMove, { passive: true })
     hero.addEventListener('pointerleave', handlePointerLeave)
 
     return () => {
+      if (resetTimer) clearTimeout(resetTimer)
       resizeObserver.disconnect()
       window.removeEventListener('scroll', markStale)
       window.removeEventListener('resize', markStale)
+      hero.removeEventListener('pointerdown', handlePointerMove)
       hero.removeEventListener('pointermove', handlePointerMove)
       hero.removeEventListener('pointerleave', handlePointerLeave)
     }

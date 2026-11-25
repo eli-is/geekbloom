@@ -16,12 +16,12 @@ export function StickyWhatsApp() {
   return (
     <div className="fixed bottom-6 left-6 z-50 flex items-end gap-3 pointer-events-auto">
       {showTooltip && (
-        <div className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-neutral-900/95 border border-emerald-500/30 text-white text-xs shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-2 duration-300">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-          <span>אביב זמין בוואטסאפ לכל שאלה!</span>
+        <div className="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl bg-neutral-900/95 border border-emerald-500/40 text-white text-[11px] sm:text-xs shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
+          <span className="whitespace-nowrap">אביב זמין בוואטסאפ לכל שאלה!</span>
           <button
             onClick={() => setShowTooltip(false)}
-            className="text-neutral-400 hover:text-white p-0.5"
+            className="text-neutral-400 hover:text-white p-0.5 mr-1"
             aria-label="סגור"
           >
             <X className="w-3.5 h-3.5" />
