@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background Gradient (Deep Forest Green) -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e3421" />
+      <stop offset="40%" stop-color="#0a2819" />
+      <stop offset="100%" stop-color="#04120a" />
+    </linearGradient>
+
+    <!-- Metallic Gold Outer Border -->
+    <linearGradient id="goldBorder" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fffae0" />
+      <stop offset="20%" stop-color="#f5d77f" />
+      <stop offset="50%" stop-color="#b88a2e" />
+      <stop offset="80%" stop-color="#f0ce72" />
+      <stop offset="100%" stop-color="#fffae0" />
+    </linearGradient>
+
+    <!-- Inner Border Shimmer -->
+    <linearGradient id="goldInner" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#d4af37" stop-opacity="0.2" />
+    </linearGradient>
+
+    <!-- Metallic Gold For Letters -->
+    <linearGradient id="goldGlyph" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="20%" stop-color="#fff6d2" />
+      <stop offset="50%" stop-color="#eec76d" />
+      <stop offset="80%" stop-color="#b8872b" />
+      <stop offset="100%" stop-color="#e2bc63" />
+    </linearGradient>
+
+    <!-- Emerald Leaf Gradient -->
+    <linearGradient id="leafGrad" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="45%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#6ee7b7" />
+    </linearGradient>
+
+    <!-- Ambient Center Emerald Glow -->
+    <radialGradient id="glow" cx="50%" cy="46%" r="48%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#04120a" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Subtle Drop Shadow -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.85" />
+    </filter>
+  </defs>
+
+  <!-- Squircle / Rounded Plaque Shape -->
+  <rect x="20" y="20" width="472" height="472" rx="112" fill="url(#bg)" stroke="url(#goldBorder)" stroke-width="16" />
+  
+  <!-- Inner Gold Accent Inset -->
+  <rect x="38" y="38" width="436" height="436" rx="96" fill="none" stroke="url(#goldInner)" stroke-width="3" />
+
+  <!-- Center Ambient Emerald Radial Glow -->
+  <circle cx="256" cy="256" r="190" fill="url(#glow)" />
+
+  
+  <!-- Monogram G with Botanical Bloom Leaf -->
+  <g filter="url(#shadow)">
+    <!-- Elegant Serif 'G' -->
+    <path d="
+      M 344,188
+      C 328,154 296,134 252,134
+      C 184,134 135,186 135,260
+      C 135,334 186,386 256,386
+      C 318,386 358,352 368,296
+      L 266,296
+      L 266,252
+      L 404,252
+      L 404,298
+      C 392,382 334,424 254,424
+      C 158,424 92,354 92,260
+      C 92,164 160,96 254,96
+      C 318,96 368,126 392,176
+      Z
+    " fill="url(#goldGlyph)" />
+
+    <!-- Blooming Emerald Leaf (Symbol of Bloom) -->
+    <path d="
+      M 340,166
+      C 356,104 416,76 436,72
+      C 434,94 424,142 380,165
+      C 360,175 346,171 340,166
+      Z
+    " fill="url(#leafGrad)" />
+    
+    <!-- Delicate Leaf Spine -->
+    <path d="M 343,165 Q 380,138 433,76" stroke="#d1fae5" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.9" />
+
+    <!-- Secondary Small Leaf Sprout -->
+    <path d="
+      M 388,142
+      C 412,130 432,124 442,118
+      C 436,134 422,150 405,152
+      Z
+    " fill="#34d399" />
+  </g>
+  
+</svg>

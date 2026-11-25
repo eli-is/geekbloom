@@ -26,6 +26,15 @@ export const metadata: Metadata = {
     "סוקולוב 66",
   ],
   authors: [{ name: "Aviv - Geek&Bloom" }],
+  icons: {
+    icon: [
+      { url: "/icon.svg?v=2", type: "image/svg+xml" },
+      { url: "/favicon.ico?v=2", sizes: "any" },
+    ],
+    apple: [
+      { url: "/apple-icon.png?v=2", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "Geek&Bloom | Where Nature Meets Geek Culture",
     description: "זרי פרחים, צמחים מיוחדים ופריטי אספנות וגיימינג תחת קורת גג אחת ברחוב סוקולוב 66, הרצליה.",
