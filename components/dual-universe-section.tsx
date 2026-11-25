@@ -30,9 +30,14 @@ export function DualUniverseSection() {
                 <Leaf className="w-5 h-5 text-emerald-400" />
                 עולם הבוטניקה & הפרחים
               </span>
-              <span className="text-xs bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-medium">
-                The Bloom
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] bg-neutral-800 text-neutral-300 border border-neutral-700 px-2 py-0.5 rounded-full font-medium lg:hidden">
+                  הקש ל-3D 👆
+                </span>
+                <span className="text-xs bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-medium">
+                  The Bloom
+                </span>
+              </div>
             </div>
 
             <CardItem
@@ -101,9 +106,14 @@ export function DualUniverseSection() {
                 <Gamepad2 className="w-5 h-5 text-purple-400" />
                 תרבות הגיקים & האספנות
               </span>
-              <span className="text-xs bg-purple-950/80 text-purple-300 border border-purple-500/30 px-2.5 py-0.5 rounded-full font-medium">
-                The Geek
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] bg-neutral-800 text-neutral-300 border border-neutral-700 px-2 py-0.5 rounded-full font-medium lg:hidden">
+                  הקש ל-3D 👆
+                </span>
+                <span className="text-xs bg-purple-950/80 text-purple-300 border border-purple-500/30 px-2.5 py-0.5 rounded-full font-medium">
+                  The Geek
+                </span>
+              </div>
             </div>
 
             <CardItem

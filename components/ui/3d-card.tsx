@@ -28,6 +28,18 @@ export const CardContainer = ({
   const touchStartYRef = useRef(0);
   const isScrollRef = useRef(false);
 
+  // במובייל כאשר מצב תלת-ממד פעיל, נטה את הכרטיס בזווית 3D דינמית ועוצמתית הנראית לעין בכל אייפון
+  useEffect(() => {
+    if (!containerRef.current) return;
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      if (isMouseEntered) {
+        containerRef.current.style.transform = `rotateY(-12deg) rotateX(8deg) scale(1.02)`;
+      } else {
+        containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg) scale(1)`;
+      }
+    }
+  }, [isMouseEntered]);
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const { left, top, width, height } =
@@ -47,7 +59,6 @@ export const CardContainer = ({
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
   };
 
-  // מניעת הבהוב והתנגשות עם גלילה במובייל - תמיכה בהקשה מבלי להפריע לגלילת הדף
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (e.touches.length > 0) {
       touchStartYRef.current = e.touches[0].clientY;
@@ -66,25 +77,33 @@ export const CardContainer = ({
 
   const handleTouchEnd = () => {
     if (!isScrollRef.current) {
-      // הקשה מכוונת בלבד מפעילה/מכבה את שכבות העומק
+      // הקשה מכוונת מפעילה/מכבה את מצב התלת-ממד וההטיה במובייל
       setIsMouseEntered((prev) => !prev);
     }
     isScrollRef.current = false;
+  };
+
+  const handleClick = () => {
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setIsMouseEntered((prev) => !prev);
+    }
   };
 
   return (
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
         className={cn(
-          "py-6 sm:py-10 md:py-20 flex items-center justify-center",
+          "py-6 sm:py-10 md:py-20 flex items-center justify-center cursor-pointer",
           containerClassName
         )}
         style={{
           perspective: "1000px",
+          WebkitPerspective: "1000px",
         }}
       >
         <div
           ref={containerRef}
+          onClick={handleClick}
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
@@ -92,11 +111,12 @@ export const CardContainer = ({
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
           className={cn(
-            "flex items-center justify-center relative transition-transform duration-200 ease-out",
+            "flex items-center justify-center relative transition-transform duration-300 ease-out will-change-transform",
             className
           )}
           style={{
             transformStyle: "preserve-3d",
+            WebkitTransformStyle: "preserve-3d",
           }}
         >
           {children}
@@ -158,9 +178,13 @@ export const CardItem = ({
   const handleAnimations = () => {
     if (!ref.current) return;
     if (isMouseEntered) {
-      ref.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
+      const transformVal = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
+      ref.current.style.transform = transformVal;
+      ref.current.style.webkitTransform = transformVal;
     } else {
-      ref.current.style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
+      const resetVal = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
+      ref.current.style.transform = resetVal;
+      ref.current.style.webkitTransform = resetVal;
     }
   };
 
