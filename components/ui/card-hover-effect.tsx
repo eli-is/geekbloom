@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "motion/react";
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 export const HoverEffect = ({
   items,
@@ -16,18 +16,6 @@ export const HoverEffect = ({
   className?: string;
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const touchTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const handleTouchStart = (idx: number) => {
-    if (touchTimerRef.current) clearTimeout(touchTimerRef.current);
-    setHoveredIndex(idx);
-  };
-
-  const handleTouchEnd = (idx: number) => {
-    touchTimerRef.current = setTimeout(() => {
-      setHoveredIndex((prev) => (prev === idx ? null : prev));
-    }, 1500);
-  };
 
   return (
     <div
@@ -37,47 +25,35 @@ export const HoverEffect = ({
       )}
     >
       {items.map((item, idx) => (
-        <motion.div
+        <a
+          href={item?.link}
           key={`${item?.title}-${idx}`}
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.45, delay: idx * 0.08, ease: "easeOut" }}
-          whileTap={{ scale: 0.98 }}
-          className="h-full w-full"
+          className="relative group block p-2 h-full w-full select-none"
+          onMouseEnter={() => setHoveredIndex(idx)}
+          onMouseLeave={() => setHoveredIndex(null)}
         >
-          <a
-            href={item?.link}
-            className="relative group block p-2 h-full w-full select-none"
-            onMouseEnter={() => setHoveredIndex(idx)}
-            onMouseLeave={() => setHoveredIndex(null)}
-            onTouchStart={() => handleTouchStart(idx)}
-            onTouchEnd={() => handleTouchEnd(idx)}
-            onTouchCancel={() => setHoveredIndex(null)}
-          >
-            <AnimatePresence>
-              {hoveredIndex === idx && (
-                <motion.span
-                  className="absolute inset-0 h-full w-full bg-gradient-to-br from-emerald-950/60 via-emerald-900/40 to-neutral-900/80 border border-emerald-500/40 shadow-[0_0_25px_rgba(16,185,129,0.2)] block rounded-3xl"
-                  layoutId="hoverBackground"
-                  initial={{ opacity: 0 }}
-                  animate={{
-                    opacity: 1,
-                    transition: { duration: 0.15 },
-                  }}
-                  exit={{
-                    opacity: 0,
-                    transition: { duration: 0.2, delay: 0.1 },
-                  }}
-                />
-              )}
-            </AnimatePresence>
-            <Card>
-              <CardTitle>{item.title}</CardTitle>
-              <CardDescription>{item.description}</CardDescription>
-            </Card>
-          </a>
-        </motion.div>
+          <AnimatePresence>
+            {hoveredIndex === idx && (
+              <motion.span
+                className="absolute inset-0 h-full w-full bg-gradient-to-br from-emerald-950/60 via-emerald-900/40 to-neutral-900/80 border border-emerald-500/40 shadow-[0_0_25px_rgba(16,185,129,0.2)] block rounded-3xl"
+                layoutId="hoverBackground"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 1,
+                  transition: { duration: 0.15 },
+                }}
+                exit={{
+                  opacity: 0,
+                  transition: { duration: 0.15, delay: 0.1 },
+                }}
+              />
+            )}
+          </AnimatePresence>
+          <Card>
+            <CardTitle>{item.title}</CardTitle>
+            <CardDescription>{item.description}</CardDescription>
+          </Card>
+        </a>
       ))}
     </div>
   );
@@ -93,7 +69,7 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "rounded-2xl h-full w-full p-4 overflow-hidden bg-neutral-900/90 border border-neutral-800 dark:border-neutral-800 group-hover:border-emerald-500/50 group-active:border-emerald-500/60 relative z-20 transition-colors duration-200 shadow-md",
+        "rounded-2xl h-full w-full p-4 overflow-hidden bg-neutral-900/90 border border-neutral-800 dark:border-neutral-800 group-hover:border-emerald-500/50 active:border-emerald-500/70 relative z-20 transition-colors duration-200 shadow-md",
         className
       )}
     >

@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "motion/react";
 import { ShaderBackground } from "@/components/ui/fluted-glass-waves";
 import {
   MapPin,
@@ -19,13 +18,7 @@ export function StoreLocationSection() {
   return (
     <section id="contact" className="w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* באנר עליון עם רקע השיידר Fluted Glass */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative rounded-3xl overflow-hidden mb-16 border border-emerald-500/20 bg-neutral-900/90 shadow-2xl"
-      >
+      <div className="relative rounded-3xl overflow-hidden mb-16 border border-emerald-500/20 bg-neutral-900/90 shadow-2xl">
         <div className="absolute inset-0 opacity-40">
           <ShaderBackground className="w-full h-full" />
         </div>
@@ -62,16 +55,10 @@ export function StoreLocationSection() {
             </a>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* פרטי החנות והמפה */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-        className="grid grid-cols-1 lg:grid-cols-3 gap-8"
-      >
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* כרטיס פרטי התקשרות */}
         <div className="p-8 rounded-3xl bg-neutral-900/80 border border-neutral-800 space-y-6">
           <h3 className="text-xl font-bold text-white flex items-center gap-2">
@@ -169,7 +156,7 @@ export function StoreLocationSection() {
             </a>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

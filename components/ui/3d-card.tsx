@@ -25,7 +25,8 @@ export const CardContainer = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
-  const touchTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const touchStartYRef = useRef(0);
+  const isScrollRef = useRef(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -46,36 +47,29 @@ export const CardContainer = ({
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
   };
 
-  // תמיכה מלאה במגע ובמובייל: הטיה תלת-ממדית עם האצבע והרמת שכבות עומק
+  // מניעת הבהוב והתנגשות עם גלילה במובייל - תמיכה בהקשה מבלי להפריע לגלילת הדף
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (touchTimerRef.current) clearTimeout(touchTimerRef.current);
-    setIsMouseEntered(true);
-    if (!containerRef.current || e.touches.length === 0) return;
-    const touch = e.touches[0];
-    const { left, top, width, height } =
-      containerRef.current.getBoundingClientRect();
-    const x = Math.max(-12, Math.min(12, (touch.clientX - left - width / 2) / 16));
-    const y = Math.max(-12, Math.min(12, (touch.clientY - top - height / 2) / 16));
-    containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+    if (e.touches.length > 0) {
+      touchStartYRef.current = e.touches[0].clientY;
+      isScrollRef.current = false;
+    }
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (!containerRef.current || e.touches.length === 0) return;
-    const touch = e.touches[0];
-    const { left, top, width, height } =
-      containerRef.current.getBoundingClientRect();
-    const x = Math.max(-14, Math.min(14, (touch.clientX - left - width / 2) / 15));
-    const y = Math.max(-14, Math.min(14, (touch.clientY - top - height / 2) / 15));
-    containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+    if (e.touches.length > 0) {
+      const dy = Math.abs(e.touches[0].clientY - touchStartYRef.current);
+      if (dy > 8) {
+        isScrollRef.current = true;
+      }
+    }
   };
 
   const handleTouchEnd = () => {
-    if (containerRef.current) {
-      containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
+    if (!isScrollRef.current) {
+      // הקשה מכוונת בלבד מפעילה/מכבה את שכבות העומק
+      setIsMouseEntered((prev) => !prev);
     }
-    touchTimerRef.current = setTimeout(() => {
-      setIsMouseEntered(false);
-    }, 700);
+    isScrollRef.current = false;
   };
 
   return (
@@ -97,9 +91,8 @@ export const CardContainer = ({
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
-          onTouchCancel={handleTouchEnd}
           className={cn(
-            "flex items-center justify-center relative transition-all duration-300 ease-out",
+            "flex items-center justify-center relative transition-transform duration-200 ease-out",
             className
           )}
           style={{
